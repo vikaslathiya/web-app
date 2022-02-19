@@ -1,24 +1,35 @@
-import logo from './logo.svg';
+
 import './App.css';
+import { Fragment } from 'react';
+import LoginPage from './components/LoginPage';
+import HomePage from './components/HomePage';
+import { useSelector } from 'react-redux';
+import { Route, Switch, Redirect } from 'react-router-dom';
+
+
 
 function App() {
+  const isLogin = useSelector(state => state.isLoginReducer.isLogin);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Switch>
+
+        {isLogin && <Route path="/home-page">
+          <HomePage />
+        </Route>}
+
+        {!isLogin && <Route exact path="/auth">
+          <LoginPage />
+        </Route>}
+
+        <Route path='*'>
+          {isLogin ? <Redirect to="/home-page" /> : <Redirect to="/auth" />}
+        </Route>
+
+      </Switch>
+    </Fragment>
   );
 }
 
