@@ -126,23 +126,6 @@ const HomePage = (props) => {
     };
 
     // extra styles in drawer
-    // const useStyles = makeStyles((theme) => ({
-    //     root: {
-    //         backgroundColor: theme.palette.background.paper
-    //     },
-    //     arrowIcon: {
-    //         "&": {
-    //             color: "black",
-    //             cursor: "pointer",
-    //         },
-    //     },
-    //     toolbar: {
-    //         "&": {
-    //             backgroundColor: "white",
-    //             color: "#9A1752",
-    //         },
-    //     },
-    // }));
     const myStyle = useStyles();
 
     const ListItem = withStyles({
