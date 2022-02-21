@@ -10,10 +10,16 @@ export const useStyles = makeStyles((theme) => ({
             cursor: "pointer",
         },
     },
-    toolbar: {
+    typography: {
         "&": {
-            backgroundColor: "white",
-            color: "#9A1752",
-        },
+            fontWeight: "bold",
+            marginLeft: "20px",
+            // flexGrow: 1,
+        }
     },
+    btn: {
+        "&": {
+            backgroundColor: "#9A1752",
+        },
+    }
 }));

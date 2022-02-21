@@ -30,6 +30,9 @@ import List from "@material-ui/core/List";
 import { Link, Route, Switch } from 'react-router-dom';
 import { useHistory, useRouteMatch, } from 'react-router-dom';
 import { useStyles } from '../MuiStyles/styles';
+import { Image } from '@mui/icons-material';
+import { IconButton } from '@material-ui/core';
+import Grid from '@mui/material/Grid';
 
 
 const HomePage = (props) => {
@@ -74,11 +77,11 @@ const HomePage = (props) => {
     }
 
     // mui drawer functions
-    const drawerWidth = 240;
+    const drawerWidth = 253;
 
     const openedMixin = (theme) => ({
         width: drawerWidth,
-        marginTop: "74px",
+        marginTop: "69px",
         marginLeft: "10px",
         backgroundColor: "#9a1752",
 
@@ -90,7 +93,7 @@ const HomePage = (props) => {
     });
 
     const closedMixin = (theme) => ({
-        marginTop: "74px",
+        marginTop: "69px",
         marginLeft: "10px",
         backgroundColor: "#9a1752",
         transition: theme.transitions.create('width', {
@@ -176,28 +179,30 @@ const HomePage = (props) => {
         setSelectedIndex(index);
     };
 
-
-
     const toggleManu = !toggleMenu ? classes["hide-menu"] : classes.dropdown;
     let userData = JSON.parse(localStorage.getItem("user"));
 
     return (
         <Fragment>
-            <div className={classes.logo}>
-                <img src={logo} alt="logo" />
+            <Box sx={{ flexGrow: 1 }}>
+                <Grid container>
+                    <Grid item xs={12}>
+                        <AppBar position="static" className={classes.appbar} style={{}}>
+                            <Toolbar className={classes.toolbar} style={{ paddingLeft: "0px" }} >
+                                <img src={logo} alt="logo" />
+                                <Typography variant="h6" component="div" className={classes.typography}
+                                    style={{ fontWeight: "bold", marginLeft: "20px" }}
+                                >
+                                    {title ? title : "Dashboard"}
+                                </Typography>
+                                <p className={classes.userFullName} >{userData.data.firstname} {userData.data.lastname}</p>
+                                <KeyboardArrowDownIcon onClick={toggleMenuHandlar} className={myStyle.arrowIcon} />
+                            </Toolbar>
+                        </AppBar>
+                    </Grid>
+                </Grid>
+            </Box>
 
-                <Box sx={{ flexGrow: 1 }}>
-                    <AppBar position="static" >
-                        <Toolbar className={myStyle.toolbar}>
-                            <Typography variant="h6" component="div" sx={{ fontWeight: "bold", flexGrow: 1 }}>
-                                {title ? title : "Dashboard"}
-                            </Typography>
-                            <p className={classes.userFullName} >{userData.data.firstname} {userData.data.lastname}</p>
-                            <KeyboardArrowDownIcon onClick={toggleMenuHandlar} className={myStyle.arrowIcon} />
-                        </Toolbar>
-                    </AppBar>
-                </Box>
-            </div>
 
             {toggleManu && <div className={toggleManu}>
                 <Button onClick={logoutHandlar} variant="contained"
@@ -212,7 +217,8 @@ const HomePage = (props) => {
                     }}>
                     Logout
                 </Button>
-            </div>}
+            </div>
+            }
 
             <div className={classes.drawer} >
                 <Box sx={{ display: 'flex' }} >
