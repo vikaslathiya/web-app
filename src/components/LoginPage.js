@@ -123,18 +123,6 @@ const LoginPage = () => {
             alert("enter valid details!")
         }
         setIsLoading(false);
-
-
-
-        // check valid inputs
-        // const validEmail = values.email.includes("@") && values.email.includes(".");
-        // const validPassword = values.password !== "";
-
-        // if (validEmail && validPassword) {
-        //     alert("user login successfuly")
-        // } else {
-        //     alert("enter valid details!")
-        // }
     }
 
 

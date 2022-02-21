@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useCallback, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 
 import Inventory from './Inventory';
@@ -19,7 +19,8 @@ const AppPages = (props) => {
 
     const jwtToken = localStorage.getItem("authToken");
 
-    useEffect(() => {
+
+    const fetchCoustomers = useCallback(() => {
         fetch("https://d.jeweltrace.in/customer/new?page_no=0&limit=10&rootInfo=company&id=", {
             headers: {
                 "x-web-token": jwtToken,
@@ -35,7 +36,11 @@ const AppPages = (props) => {
             }))
 
         })
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        fetchCoustomers();
+    }, [fetchCoustomers]);
 
     switch (paramas.name) {
         case "dashboard":
@@ -49,13 +54,6 @@ const AppPages = (props) => {
         case "reports":
             return <Reports />
     }
-
-    return (
-        <Fragment>
-
-
-        </Fragment>
-    )
 }
 
 

@@ -61,6 +61,7 @@ const Customers = () => {
         <Fragment>
             <Paper sx={{ width: '99.5%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 420 }}>
+
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead >
                             <TableRow>
