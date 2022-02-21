@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { useSelector } from 'react-redux';
 
-import { makeStyles } from "@material-ui/core/styles";
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,16 +9,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button } from '@mui/material';
-import { Search } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
-import { styled, alpha } from '@mui/material/styles';
-import InputBase from '@mui/material/InputBase';
-import { Toolbar } from '@material-ui/core';
+
+import { Search, SearchIconWrapper, StyledInputBase, useStyles } from '../../MuiStyles/CustomerStyles';
 
 const Customers = () => {
     const [page, setPage] = useState(0);
@@ -40,18 +36,6 @@ const Customers = () => {
         setPage(0);
     };
 
-    // icons styles
-    const useStyles = makeStyles((theme) => ({
-        icons: {
-            "& .MuiSvgIcon-root": {
-                fontSize: "18px",
-                margin: "0px 4px",
-                cursor: "pointer",
-            },
-        },
-    }));
-    const myStyle = useStyles();
-
     // create colums for table
     const columns = [
         { id: 'name', label: 'NAME', align: 'center', minWidth: 140 },
@@ -63,87 +47,44 @@ const Customers = () => {
         { id: 'action', label: 'ACTION', minWidth: 120, align: 'center' },
     ];
 
-    const Search = styled('div')(({ theme }) => ({
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: alpha(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.common.white, 0.25),
-        },
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(1),
-            width: 'auto',
-        },
-    }));
-
-    const SearchIconWrapper = styled('div')(({ theme }) => ({
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    }));
-
-    const StyledInputBase = styled(InputBase)(({ theme }) => ({
-        color: 'inherit',
-        '& .MuiInputBase-input': {
-            padding: theme.spacing(1, 1, 1, 0),
-            // vertical padding + font size from searchIcon
-            paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-            transition: theme.transitions.create('width'),
-            width: '100%',
-            [theme.breakpoints.up('sm')]: {
-                width: '12ch',
-                '&:focus': {
-                    width: '20ch',
-                },
-            },
-        },
-    }));
-
+    // mui styles
+    const myStyle = useStyles();
 
     return (
         <Fragment>
-            <Paper sx={{ width: '99.5%', overflow: 'hidden' }}>
+            <Box>
+                <Search>
+                    <StyledInputBase placeholder="Search here…"
+                        inputProps={{ 'aria-label': 'search' }} />
+                    <SearchIconWrapper>
+                        <SearchIcon />
+                    </SearchIconWrapper>
+                </Search>
+
+                <Box className={myStyle.tableTop}>
+                    <h4>Total Customers: {customer.length}</h4>
+                    <Button variant="contained">
+                        Add Customers
+                    </Button>
+                </Box>
+
+            </Box>
+            <Paper sx={{ width: '99.5%' }}>
                 <TableContainer sx={{ maxHeight: 420 }}>
-                    <Box>
-                        <Toolbar>
-                            <Search
-                                style={{ width: "210px" }}
-                            >
-                                <SearchIconWrapper>
-                                    <SearchIcon />
-                                </SearchIconWrapper>
-                                <StyledInputBase
-                                    placeholder="Search…"
-                                    inputProps={{ 'aria-label': 'search' }}
-                                    sx={{ border: "1px solid gray", borderRadius: "10px" }}
-                                />
-                            </Search>
-                            <Box sx={{ m: "auto" }}>
-                                <h4>Total Customers: {customer.length}</h4>
-                            </Box>
-                            <Button sx={{ backgroundColor: "#9A1752", "&:hover": { backgroundColor: "#f8d3e4", color: "#9A1752" } }} variant="contained">
-                                Add Customers
-                            </Button>
-                        </Toolbar>
-                    </Box>
-                    <Table stickyHeader aria-label="sticky table">
+                    <Table stickyHeader aria-label="sticky table" sx={{ overflowX: 'hidden' }}>
                         <TableHead >
                             <TableRow>
                                 {columns.map((column) => (<TableCell
                                     key={column.id}
                                     align={column.align}
-                                    style={{
+                                    sx={{
                                         minWidth: column.minWidth,
-                                        backgroundColor: "#76b9f0",
+                                        color: "white",
+                                        backgroundColor: "#9A1752",
                                         fontWeight: "bold",
-                                        padding: "5px",
-                                    }}>
+                                        padding: "10px",
+                                    }}
+                                >
                                     {column.label}
                                 </TableCell>
                                 ))}
@@ -157,9 +98,7 @@ const Customers = () => {
                                             const value = row[column.id];
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
-                                                    {column.format && typeof value === 'number'
-                                                        ? column.format(value)
-                                                        : value}
+                                                    {value}
                                                     {column.id === "action" && <div className={myStyle.icons}>
                                                         <VisibilityIcon />
                                                         <EditIcon />
@@ -184,8 +123,6 @@ const Customers = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-
-
         </Fragment>
 
     );

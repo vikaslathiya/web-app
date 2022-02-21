@@ -1,12 +1,11 @@
 
 import './App.css';
 import { Fragment } from 'react';
-import LoginPage from './components/LoginPage';
-import HomePage from './components/HomePage';
+import LoginPage from './components/pages/LoginPage';
+import HomePage from './components/pages/HomePage';
 // import DashboardPage from "./components/pages/DashboardPage";
 import { useSelector } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
-
 
 
 function App() {
@@ -15,6 +14,7 @@ function App() {
 
   return (
     <Fragment>
+      {/* <VariableWidthGrid /> */}
       <Switch>
 
         {isLogin && <Route path="/home-page">
