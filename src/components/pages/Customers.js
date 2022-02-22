@@ -20,10 +20,10 @@ import { Search, SearchIconWrapper, StyledInputBase, useStyles } from '../../Mui
 const Customers = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [search, setSearch] = useState("");
 
     // get customers data from store
-    const customer = useSelector(state => state.getCustomers.users)
-    console.log(customer)
+    let userData = useSelector(state => state.getCustomers.users)
 
     // change pages 
     const handleChangePage = (event, newPage) => {
@@ -36,7 +36,21 @@ const Customers = () => {
         setPage(0);
     };
 
-    // create colums for table
+    const searchChangeHandlar = (e) => {
+        e.preventDefault();
+        const searchCustomer = userData.filter(user => {
+            const data =  user.tel.includes(e.target.value)
+                || user.name.toLowerCase().includes(e.target.value.toLowerCase())
+                || user.email.includes(e.target.value);
+        return data;
+        });
+        setSearch(searchCustomer);
+
+    };
+    let customer = search !== "" ? search : userData;
+    const NoCustomer = customer.length === 0;
+
+    // create columns for table
     const columns = [
         { id: 'name', label: 'NAME', align: 'center', minWidth: 140 },
         { id: 'tel', label: 'TEL', align: 'center', minWidth: 100 },
@@ -55,6 +69,7 @@ const Customers = () => {
             <Box>
                 <Search>
                     <StyledInputBase placeholder="Search here…"
+                       onChange={searchChangeHandlar}
                         inputProps={{ 'aria-label': 'search' }} />
                     <SearchIconWrapper>
                         <SearchIcon />
@@ -62,7 +77,7 @@ const Customers = () => {
                 </Search>
 
                 <Box className={myStyle.tableTop}>
-                    <h4>Total Customers: {customer.length}</h4>
+                    <h4>Total Customers: {userData.length}</h4>
                     <Button variant="contained">
                         Add Customers
                     </Button>
@@ -91,7 +106,7 @@ const Customers = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {customer.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            {!NoCustomer && customer.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                                         {columns.map((column) => {
@@ -112,6 +127,7 @@ const Customers = () => {
                             })}
                         </TableBody>
                     </Table>
+                    {NoCustomer && <h4 style={{textAlign: "center"}} >No Customer Found!</h4>}
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 100]}

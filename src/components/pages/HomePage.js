@@ -26,7 +26,7 @@ import { useHistory, useRouteMatch, } from 'react-router-dom';
 
 import { useStyles, Drawer, ListItem } from '../../MuiStyles/HomepageStyles';
 
-const HomePage = (props) => {
+const HomePage = () => {
     const [open, setOpen] = useState(false);
     const [toggleMenu, setToggleMenu] = useState(false);
     const [title, setTitle] = useState(null);
@@ -91,7 +91,7 @@ const HomePage = (props) => {
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container>
                     <Grid item xs={12}>
-                        <AppBar position="static" className={myStyle.appbar}>
+                        <AppBar position="static" sx={{width: "auto"}} className={myStyle.appbar}>
                             <Toolbar>
                                 <img src={logo} alt="logo" onClick={handleDrawerClose} />
                                 <Typography variant="h6" component="div" >
