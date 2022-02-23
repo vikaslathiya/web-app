@@ -12,16 +12,21 @@ import MenuItem from '@mui/material/MenuItem';
 const AddCustomer = () => {
 
     const inputChange = () => {
-
+        // input values;
     }
 
     const myStyle = useStyles();
 
-    const currencies = [
-        {value: 'USD', label: '$'},
-        {value: 'EUR', label: '€'},
-        {value: 'BTC', label: '฿'},
-        {value: 'JPY', label: '¥'},
+    const customerType = [
+        {value: ' corporate', label: ' Corporate'},
+        {value: 'private', label: 'Private'},
+    ];
+
+    const countries = [
+        {value: 'india', label: 'India'},
+        {value: 'bangladesh', label: 'Bangladesh'},
+        {value: 'sriLanka', label: 'Sri Lanka'},
+        {value: 'china', label: 'China'},
     ];
 
     return (<Fragment>
@@ -29,9 +34,9 @@ const AddCustomer = () => {
                 <div className={myStyle.container}>
                     <h3>Add Customer</h3>
                     <Box component="form" className={myStyle.form} noValidate autoComplete="off">
-                        <div>
+                        <div className={myStyle.radioBtn} >
                             <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label"
-                                        className={myStyle.radioBtn} name="row-radio-buttons-group">
+                                        name="row-radio-buttons-group">
                                 <FormLabel htmlFor="outlined-adornment-password">Type of Customer:</FormLabel>
                                 <FormControlLabel value="corporate" control={<Radio size="small"/>} label="Corporate"/>
                                 <FormControlLabel value="private" control={<Radio size="small"/>} label="Private"/>
@@ -129,7 +134,7 @@ const AddCustomer = () => {
                                     select
                                     size="small"
                                     onChange={inputChange}>
-                                    {currencies.map((option) => (
+                                    {customerType.map((option) => (
                                         <MenuItem key={option.value} value={option.value}>
                                             {option.label}
                                         </MenuItem>))}
@@ -142,7 +147,7 @@ const AddCustomer = () => {
                                     select
                                     size="small"
                                     onChange={inputChange}>
-                                    {currencies.map((option) => (
+                                    {countries.map((option) => (
                                         <MenuItem key={option.value} value={option.value}>
                                             {option.label}
                                         </MenuItem>))}
@@ -168,18 +173,18 @@ const AddCustomer = () => {
                                 />
                             </FormControl>
                         </div>
-                        <div>
+                        <div className={myStyle.radioBtn}>
                             <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label"
-                                        className={myStyle.radioBtn} name="row-radio-buttons-group">
+                                        name="row-radio-buttons-group">
                                 <FormLabel htmlFor="outlined-adornment-password">Rounded Pricing:</FormLabel>
                                 <FormControlLabel value="simple" control={<Radio size="small"/>} label="Simple"/>
                                 <FormControlLabel value="roundUp" control={<Radio size="small"/>} label="Round Up"/>
                                 <FormControlLabel value="roundDown" control={<Radio size="small"/>} label="Round Down"/>
                             </RadioGroup>
                         </div>
-                        <div>
+                        <div className={myStyle.radioBtn}>
                             <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label"
-                                        className={myStyle.radioBtn} name="row-radio-buttons-group">
+                                        name="row-radio-buttons-group">
                                 <FormLabel htmlFor="outlined-adornment-password">Status:</FormLabel>
                                 <FormControlLabel value="active" control={<Radio size="small"/>} label="Active"/>
                                 <FormControlLabel value="inactive" control={<Radio size="small"/>} label="Inactive"/>

@@ -10,6 +10,10 @@ export const useStyles = makeStyles((theme) => ({
         },
     },
     form: {
+        "& div": {
+            display: "flex",
+            justifyContent: "center"
+        },
         "& .MuiTextField-root": {
             margin: "8px",
             width: '25ch',
@@ -34,19 +38,23 @@ export const useStyles = makeStyles((theme) => ({
         },
     },
     radioBtn: {
-        "& .MuiFormLabel-root": {
+        "&": {
+            justifyContent: "flex-start !important",
+            marginLeft: "80px",
+        },
+        "& .MuiFormGroup-root .MuiFormLabel-root": {
             color: "#4a4a4a",
         },
-        "& ": {
+        "& .MuiFormGroup-root ": {
             alignItems: "center",
             margin: "4px 10px",
             width: "fit-content"
         },
-        "& .MuiFormControlLabel-root": {
+        "& .MuiFormGroup-root .MuiFormControlLabel-root": {
             marginLeft: "0px",
             marginRight: "6px",
         },
-        "& .MuiFormControlLabel-root .MuiRadio-root": {
+        "& .MuiFormGroup-root .MuiFormControlLabel-root .MuiRadio-root": {
             color: "#9A1752"
         }
     },
