@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { useSelector } from 'react-redux';
+import { useHistory, useRouteMatch} from 'react-router-dom';
 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -21,6 +22,8 @@ const Customers = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [search, setSearch] = useState("");
+    const match = useRouteMatch();
+    const history = useHistory();
 
     // get customers data from store
     let userData = useSelector(state => state.getCustomers.users)
@@ -50,6 +53,10 @@ const Customers = () => {
     let customer = search !== "" ? search : userData;
     const NoCustomer = customer.length === 0;
 
+    const addCustomerHandlar = () => {
+            history.push(`${match.url}/add-customer`)
+    };
+
     // create columns for table
     const columns = [
         { id: 'name', label: 'NAME', align: 'center', minWidth: 140 },
@@ -78,9 +85,11 @@ const Customers = () => {
 
                 <Box className={myStyle.tableTop}>
                     <h4>Total Customers: {userData.length}</h4>
-                    <Button variant="contained">
+
+                    <Button variant="contained"  onClick={addCustomerHandlar}>
                         Add Customers
                     </Button>
+
                 </Box>
 
             </Box>
@@ -106,7 +115,8 @@ const Customers = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {!NoCustomer && customer.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            {!NoCustomer && customer.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                                         {columns.map((column) => {
@@ -139,7 +149,11 @@ const Customers = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
+
+
+
         </Fragment>
+
 
     );
 }

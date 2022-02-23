@@ -1,5 +1,5 @@
-import { styled } from '@mui/material/styles';
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import {styled} from '@mui/material/styles';
+import {makeStyles, withStyles} from "@material-ui/core/styles";
 import MuiListItem from "@material-ui/core/ListItem";
 import MuiDrawer from '@mui/material/Drawer';
 
@@ -10,7 +10,10 @@ export const useStyles = makeStyles((theme) => ({
     },
     appbar: {
         "&": {
-            margin: "5px 10px",
+            // margin: "5px 10px",
+        },
+        "& .MuiAppBar-positionSticky": {
+           position: "sticky",
         },
         "& .MuiToolbar-root": {
             backgroundColor: "white",
@@ -81,8 +84,8 @@ export const useStyles = makeStyles((theme) => ({
 // home page mui drawer functions
 export const openedMixin = (theme) => ({
     width: "253px",
-    marginTop: "69px",
-    marginLeft: "10px",
+    marginTop: "64px",
+    // marginLeft: "10px",
     backgroundColor: "#9a1752",
 
     transition: theme.transitions.create('width', {
@@ -93,8 +96,8 @@ export const openedMixin = (theme) => ({
 });
 
 export const closedMixin = (theme) => ({
-    marginTop: "69px",
-    marginLeft: "10px",
+    marginTop: "64px",
+    // marginLeft: "10px",
     backgroundColor: "#9a1752",
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
@@ -107,8 +110,8 @@ export const closedMixin = (theme) => ({
     },
 });
 
-export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
+export const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
+    ({theme, open}) => ({
         width: "253px",
         flexShrink: 0,
         whiteSpace: 'nowrap',

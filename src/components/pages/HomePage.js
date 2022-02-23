@@ -1,11 +1,11 @@
-import React, { Fragment, useState } from 'react';
+import React, {Fragment, useState} from 'react';
 
-import { useDispatch } from 'react-redux';
-import { loginAction } from '../store/loginReducer';
+import {useDispatch} from 'react-redux';
+import {loginAction} from '../store/loginReducer';
 
 import logo from "../../img/Capture.JPG";
 import AppPages from './AppPages';
-import DeshboardPage from './DashboardPage';
+import DashboardPage from './DashboardPage';
 
 import {
     AppBar, Box, Button, Toolbar, Typography, CssBaseline,
@@ -21,10 +21,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
 import Grid from '@mui/material/Grid';
 
-import { Link, Route, Switch } from 'react-router-dom';
-import { useHistory, useRouteMatch, } from 'react-router-dom';
+import {Link, Route, Switch} from 'react-router-dom';
+import {useHistory, useRouteMatch,} from 'react-router-dom';
 
-import { useStyles, Drawer, ListItem } from '../../MuiStyles/HomepageStyles';
+import {useStyles, Drawer, ListItem} from '../../MuiStyles/HomepageStyles';
 
 const HomePage = () => {
     const [open, setOpen] = useState(false);
@@ -33,7 +33,7 @@ const HomePage = () => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const dispatch = useDispatch();
     const history = useHistory();
-    const { path, url } = useRouteMatch();
+    const {path, url} = useRouteMatch();
 
     const jwtToken = localStorage.getItem("authToken");
 
@@ -88,17 +88,17 @@ const HomePage = () => {
 
     return (
         <Fragment>
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{flexGrow: 1}}>
                 <Grid container>
                     <Grid item xs={12}>
-                        <AppBar position="static" sx={{width: "auto"}} className={myStyle.appbar}>
+                        <AppBar position="fixed" style={{width: "-webkit-fill-available"}} className={myStyle.appbar}>
                             <Toolbar>
-                                <img src={logo} alt="logo" onClick={handleDrawerClose} />
-                                <Typography variant="h6" component="div" >
+                                <img src={logo} alt="logo" onClick={handleDrawerClose}/>
+                                <Typography variant="h6" component="div">
                                     {title ? title : "Dashboard"}
                                 </Typography>
                                 <p>{userData.data.firstname} {userData.data.lastname}</p>
-                                <KeyboardArrowDownIcon onClick={toggleMenuHandlar} />
+                                <KeyboardArrowDownIcon onClick={toggleMenuHandlar}/>
                             </Toolbar>
                         </AppBar>
                     </Grid>
@@ -116,62 +116,66 @@ const HomePage = () => {
             </div>}
 
             <div>
-                <Box sx={{ display: 'flex' }} >
-                    <CssBaseline />
+                <Box sx={{display: 'flex'}}>
+                    <CssBaseline/>
                     <Drawer variant="permanent" open={open} className={myStyle.root}>
                         <List component="nav" className={myStyle.list}>
                             <Link to={`${url}/dashboard`}
-                                onClick={(event) => handleListItemClick(event, 0)}>
+                                  onClick={(event) => handleListItemClick(event, 0)}>
                                 <ListItem button selected={selectedIndex === 0}>
-                                    <ListItemIcon onClick={handleDrawerClose}><DashboardIcon /></ListItemIcon>
-                                    <ListItemText >Dashboard</ListItemText>
+                                    <ListItemIcon onClick={handleDrawerClose}><DashboardIcon/></ListItemIcon>
+                                    <ListItemText>Dashboard</ListItemText>
                                 </ListItem>
                             </Link>
 
                             <Link onClick={(event) => handleListItemClick(event, 1)}
-                                to={`${url}/inventory`}>
+                                  to={`${url}/inventory`}>
                                 <ListItem button selected={selectedIndex === 1}>
-                                    <ListItemIcon onClick={handleDrawerClose}> <ListAltIcon />  </ListItemIcon>
-                                    <ListItemText >Inventory </ListItemText>
+                                    <ListItemIcon onClick={handleDrawerClose}> <ListAltIcon/> </ListItemIcon>
+                                    <ListItemText>Inventory </ListItemText>
                                 </ListItem>
                             </Link>
 
                             <Link onClick={(event) => handleListItemClick(event, 2)}
-                                to={`${url}/transactions`}>
-                                <ListItem button selected={selectedIndex === 2} >
-                                    <ListItemIcon onClick={handleDrawerClose}> <MenuBookIcon /></ListItemIcon>
-                                    <ListItemText > Transactions</ListItemText>
+                                  to={`${url}/transactions`}>
+                                <ListItem button selected={selectedIndex === 2}>
+                                    <ListItemIcon onClick={handleDrawerClose}> <MenuBookIcon/></ListItemIcon>
+                                    <ListItemText> Transactions</ListItemText>
                                 </ListItem>
                             </Link>
 
                             <Link onClick={(event) => handleListItemClick(event, 3)}
-                                to={`${url}/customers`}>
+                                  to={`${url}/customers`}>
                                 <ListItem button selected={selectedIndex === 3}>
-                                    <ListItemIcon onClick={handleDrawerClose}> <PeopleIcon /> </ListItemIcon>
-                                    <ListItemText >Customers</ListItemText>
+                                    <ListItemIcon onClick={handleDrawerClose}> <PeopleIcon/> </ListItemIcon>
+                                    <ListItemText>Customers</ListItemText>
                                 </ListItem>
                             </Link>
 
                             <Link onClick={(event) => handleListItemClick(event, 4)}
-                                to={`${url}/reports`}>
+                                  to={`${url}/reports`}>
                                 <ListItem button selected={selectedIndex === 4}>
-                                    <ListItemIcon onClick={handleDrawerClose}><AutoGraphIcon /></ListItemIcon>
-                                    <ListItemText > Reports </ListItemText>
+                                    <ListItemIcon onClick={handleDrawerClose}><AutoGraphIcon/></ListItemIcon>
+                                    <ListItemText> Reports </ListItemText>
                                 </ListItem>
                             </Link>
                         </List>
                     </Drawer>
 
-                    <Box component="main" sx={{ flexGrow: 1, p: 1, overflowX: "auto" }}>
+                    <Box component="main"
+                         sx={{flexGrow: 1, p: 1, mt: "7%", overflowX: "auto"}}>
+
                         <Switch>
-                            <Route exact path={`${path}`}><DeshboardPage /></Route>
-                            <Route path={`${path}/:name`}><AppPages titleName={titleChangeHandlar} /></Route>
+                            <Route exact path={`${path}`}><DashboardPage/></Route>
+                            <Route path={`${path}/:name`}><AppPages titleName={titleChangeHandlar}/></Route>
                         </Switch>
+
+
                     </Box>
                 </Box>
             </div>
 
-        </Fragment >
+        </Fragment>
     )
 }
 

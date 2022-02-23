@@ -1,5 +1,5 @@
-import React, { Fragment, useCallback, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import React, { useCallback, useEffect } from 'react';
+import {useParams, Switch, Route, useRouteMatch} from "react-router-dom";
 
 import Inventory from './Inventory';
 import Transactions from "./Transactions";
@@ -8,10 +8,13 @@ import Reports from "./Reports";
 import DeshboardPage from './DashboardPage';
 import { useDispatch } from 'react-redux';
 import { userDataAction } from '../store/userDataReducer';
+import AddCustomer from "./AddCustomer";
 
 const AppPages = (props) => {
     const paramas = useParams();
     const dispatch = useDispatch();
+    const match = useRouteMatch()
+    console.log(match.path);
 
     const convertedUpper = paramas.name.slice(0, 1).toUpperCase()
     const upperLetter = paramas.name.replace(paramas.name.slice(0, 1), convertedUpper);
@@ -50,7 +53,12 @@ const AppPages = (props) => {
         case "transactions":
             return <Transactions />
         case "customers":
-            return <Customers />
+            return(
+                <Switch>
+                    <Route exact path={match.path}><Customers /></Route>
+                    <Route path={`${match.path}/add-customer`}><AddCustomer /></Route>
+                </Switch>
+                );
         case "reports":
             return <Reports />
     }
