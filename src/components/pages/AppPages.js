@@ -1,66 +1,76 @@
-import React, { useCallback, useEffect } from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {useParams, Switch, Route, useRouteMatch} from "react-router-dom";
 
 import Inventory from './Inventory';
 import Transactions from "./Transactions";
 import Customers from "./Customers";
 import Reports from "./Reports";
-import DeshboardPage from './DashboardPage';
-import { useDispatch } from 'react-redux';
-import { userDataAction } from '../store/userDataReducer';
+import DashboardPage from './DashboardPage';
+import {useDispatch} from 'react-redux';
+import {userDataAction} from '../store/userDataReducer';
 import AddCustomer from "./AddCustomer";
+import axios from 'axios';
 
 const AppPages = (props) => {
-    const paramas = useParams();
+    // const editMode = useSelector(state => state.getCustomers.editMode);
+    const param = useParams();
     const dispatch = useDispatch();
     const match = useRouteMatch()
-    console.log(match.path);
+    // console.log(editMode);
 
-    const convertedUpper = paramas.name.slice(0, 1).toUpperCase()
-    const upperLetter = paramas.name.replace(paramas.name.slice(0, 1), convertedUpper);
+    const convertedUpper = param.name.slice(0, 1).toUpperCase()
+    const upperLetter = param.name.replace(param.name.slice(0, 1), convertedUpper);
     props.titleName(upperLetter)
 
-    const jwtToken = localStorage.getItem("authToken");
+    const webToken = localStorage.getItem("authToken");
 
 
-    const fetchCoustomers = useCallback(() => {
-        fetch("https://d.jeweltrace.in/customer/new?page_no=0&limit=10&rootInfo=company&id=", {
+    const fetchCustomers = useCallback(() => {
+
+        axios.get("https://d.jeweltrace.in/customer/new?page_no=0&limit=10&rootInfo=company&id=", {
             headers: {
-                "x-web-token": jwtToken,
+                "x-web-token": webToken,
             }
         }).then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-        }).then(data => {
-            console.log(data.data_array)
+            console.log(res)
             dispatch(userDataAction.getCustomer({
-                users: data.data_array,
+                users: res.data.data_array,
             }))
-
         })
-    }, []);
+
+    }, [dispatch, webToken]);
 
     useEffect(() => {
-        fetchCoustomers();
-    }, [fetchCoustomers]);
+        fetchCustomers();
+    }, [fetchCustomers]);
 
-    switch (paramas.name) {
+    switch (param.name) {
         case "dashboard":
-            return <DeshboardPage />
+            return (
+                <>
+                    {<DashboardPage/>}
+                </>
+            );
+
         case "inventory":
-            return <Inventory />
+            return <Inventory/>
+
         case "transactions":
-            return <Transactions />
+            return <Transactions/>
+
         case "customers":
-            return(
+            return (
                 <Switch>
-                    <Route exact path={match.path}><Customers /></Route>
-                    <Route path={`${match.path}/add-customer`}><AddCustomer /></Route>
+                    <Route exact path={match.path}><Customers/></Route>
+                    <Route path={`${match.path}/add-customer`}><AddCustomer/></Route>
                 </Switch>
-                );
+            );
+
         case "reports":
-            return <Reports />
+            return <Reports/>
+
+        default:
+            return;
     }
 }
 

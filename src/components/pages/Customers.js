@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
-import { useSelector } from 'react-redux';
-import { useHistory, useRouteMatch} from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -8,15 +8,16 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { Button, TablePagination } from '@material-ui/core';
 
 import { Search, SearchIconWrapper, StyledInputBase, useStyles } from '../../MuiStyles/CustomerStyles';
+import { userDataAction } from "../store/userDataReducer";
 
 const Customers = () => {
     const [page, setPage] = useState(0);
@@ -24,9 +25,11 @@ const Customers = () => {
     const [search, setSearch] = useState("");
     const match = useRouteMatch();
     const history = useHistory();
+    const dispatch = useDispatch();
 
     // get customers data from store
-    let userData = useSelector(state => state.getCustomers.users)
+    const userData = useSelector(state => state.getCustomers.users)
+
 
     // change pages 
     const handleChangePage = (event, newPage) => {
@@ -39,32 +42,41 @@ const Customers = () => {
         setPage(0);
     };
 
-    const searchChangeHandlar = (e) => {
+    console.log(userData)
+    let data;
+    const searchChangeHandler = (e) => {
         e.preventDefault();
         const searchCustomer = userData.filter(user => {
-            const data =  user.tel.includes(e.target.value)
-                || user.name.toLowerCase().includes(e.target.value.toLowerCase())
+            data = user.contactNumber.includes(e.target.value)
+                || user.firstName.toLowerCase().includes(e.target.value.toLowerCase())
                 || user.email.includes(e.target.value);
-        return data;
+            return data;
         });
         setSearch(searchCustomer);
-
     };
+
     let customer = search !== "" ? search : userData;
     const NoCustomer = customer.length === 0;
 
-    const addCustomerHandlar = () => {
-            history.push(`${match.url}/add-customer`)
+
+
+    const addCustomerHandler = () => {
+        history.push(`${match.url}/add-customer`)
     };
+
+    const editCustomerHandler = (row) => {
+        dispatch(userDataAction.editCustomer({ edit: row }));
+        history.push(`${match.url}/add-customer`)
+    }
 
     // create columns for table
     const columns = [
-        { id: 'name', label: 'NAME', align: 'center', minWidth: 140 },
-        { id: 'tel', label: 'TEL', align: 'center', minWidth: 100 },
+        { id: 'firstName', label: 'NAME', align: 'center', minWidth: 140 },
+        { id: 'contactNumber', label: 'TEL', align: 'center', minWidth: 100 },
         { id: 'email', label: 'EMAIL', minWidth: 150, align: 'center' },
-        { id: 'company', label: 'COMPANY', minWidth: 100, align: 'center' },
-        { id: 'totalPur', label: 'TOTAL NO. PURCHASES', minWidth: 125, align: 'center' },
-        { id: 'totalValue', label: 'TOTAL PURCHASES VALUE', minWidth: 172, align: 'center' },
+        { id: 'companyName', label: 'COMPANY', minWidth: 100, align: 'center' },
+        { id: 'itemTotal', label: 'TOTAL NO. PURCHASES', minWidth: 125, align: 'center' },
+        { id: 'priceTotal', label: 'TOTAL PURCHASES VALUE', minWidth: 172, align: 'center' },
         { id: 'action', label: 'ACTION', minWidth: 120, align: 'center' },
     ];
 
@@ -76,7 +88,7 @@ const Customers = () => {
             <Box>
                 <Search>
                     <StyledInputBase placeholder="Search here…"
-                       onChange={searchChangeHandlar}
+                        onChange={searchChangeHandler}
                         inputProps={{ 'aria-label': 'search' }} />
                     <SearchIconWrapper>
                         <SearchIcon />
@@ -86,7 +98,7 @@ const Customers = () => {
                 <Box className={myStyle.tableTop}>
                     <h4>Total Customers: {userData.length}</h4>
 
-                    <Button variant="contained"  onClick={addCustomerHandlar}>
+                    <Button variant="contained" onClick={addCustomerHandler}>
                         Add Customers
                     </Button>
 
@@ -94,9 +106,9 @@ const Customers = () => {
 
             </Box>
             <Paper sx={{ width: '99.5%' }}>
-                <TableContainer sx={{ maxHeight: 420 }}>
+                <TableContainer sx={{ maxHeight: "345px" }}>
                     <Table stickyHeader aria-label="sticky table" sx={{ overflowX: 'hidden' }}>
-                        <TableHead >
+                        <TableHead>
                             <TableRow>
                                 {columns.map((column) => (<TableCell
                                     key={column.id}
@@ -117,30 +129,34 @@ const Customers = () => {
                         <TableBody>
                             {!NoCustomer && customer.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                                        {columns.map((column) => {
-                                            const value = row[column.id];
-                                            return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    {value}
-                                                    {column.id === "action" && <div className={myStyle.icons}>
-                                                        <VisibilityIcon />
-                                                        <EditIcon />
-                                                        <DeleteIcon />
-                                                    </div>}
-                                                </TableCell>
-                                            );
-                                        })}
-                                    </TableRow>
-                                );
-                            })}
+                                    return (
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
+                                            {columns.map((column) => {
+
+                                                const value = column.id === "firstName" ?
+                                                    `${row[column.id]} ${row["familyName"]}` :
+                                                    row[column.id];
+
+                                                return (
+                                                    <TableCell key={column.id} align={column.align}>
+                                                        {value}
+                                                        {column.id === "action" && <div className={myStyle.icons}>
+                                                            <VisibilityIcon />
+                                                            <EditIcon onClick={() => editCustomerHandler(row)} />
+                                                            <DeleteIcon />
+                                                        </div>}
+                                                    </TableCell>
+                                                );
+                                            })}
+                                        </TableRow>
+                                    );
+                                })}
                         </TableBody>
                     </Table>
-                    {NoCustomer && <h4 style={{textAlign: "center"}} >No Customer Found!</h4>}
+                    {NoCustomer && <h4 style={{ textAlign: "center" }}>No Customer Found!</h4>}
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
+                    rowsPerPageOptions={[5, 10, 25, 100]}
                     component="div"
                     count={customer.length}
                     rowsPerPage={rowsPerPage}
@@ -149,8 +165,6 @@ const Customers = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-
-
 
         </Fragment>
 

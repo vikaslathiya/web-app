@@ -22,7 +22,7 @@ import List from "@material-ui/core/List";
 import Grid from '@mui/material/Grid';
 
 import {Link, Route, Switch} from 'react-router-dom';
-import {useHistory, useRouteMatch,} from 'react-router-dom';
+import {useHistory, useRouteMatch} from 'react-router-dom';
 
 import {useStyles, Drawer, ListItem} from '../../MuiStyles/HomepageStyles';
 
@@ -34,6 +34,7 @@ const HomePage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const {path, url} = useRouteMatch();
+
 
     const jwtToken = localStorage.getItem("authToken");
 
@@ -57,13 +58,13 @@ const HomePage = () => {
     }
 
     // toggle logout button
-    const toggleMenuHandlar = (e) => {
+    const toggleMenuHandler = (e) => {
         e.preventDefault();
         setToggleMenu(!toggleMenu);
     }
 
     // change title name
-    const titleChangeHandlar = (name) => {
+    const titleChangeHandler = (name) => {
         setTitle(name);
     }
 
@@ -98,7 +99,7 @@ const HomePage = () => {
                                     {title ? title : "Dashboard"}
                                 </Typography>
                                 <p>{userData.data.firstname} {userData.data.lastname}</p>
-                                <KeyboardArrowDownIcon onClick={toggleMenuHandlar}/>
+                                <KeyboardArrowDownIcon onClick={toggleMenuHandler}/>
                             </Toolbar>
                         </AppBar>
                     </Grid>
@@ -163,13 +164,12 @@ const HomePage = () => {
                     </Drawer>
 
                     <Box component="main"
-                         sx={{flexGrow: 1, p: 1, mt: "7%", overflowX: "auto"}}>
+                         sx={{flexGrow: 1, p: 1, mt: "75px", overflowX: "auto"}}>
 
                         <Switch>
                             <Route exact path={`${path}`}><DashboardPage/></Route>
-                            <Route path={`${path}/:name`}><AppPages titleName={titleChangeHandlar}/></Route>
+                            <Route path={`${path}/:name`}><AppPages titleName={titleChangeHandler}/></Route>
                         </Switch>
-
 
                     </Box>
                 </Box>

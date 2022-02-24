@@ -32,19 +32,21 @@ const LoginPage = () => {
         showPassword: false,
     });
 
-    // stay loggedin user
+    // stay logged user
     useEffect(() => {
         const loggedIn = localStorage.getItem("authToken");
         if (loggedIn) {
             dispatch(loginAction.login({ isLogin: true, token: loggedIn }));
-            history.replace("/home-page");
+            // history.replace(`${match.url}`);
         }
     }, [dispatch]);
+
+
 
     // style for input element
     const myStyle = useStyle();
 
-    // toggle password visiblity
+    // toggle password visibility
     const handleClickShowPassword = () => {
         setValues({
             ...values,
@@ -58,7 +60,7 @@ const LoginPage = () => {
     };
 
     // form submit 
-    const submitHandlar = async (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
         setIsLoading(true);
 
@@ -88,8 +90,7 @@ const LoginPage = () => {
                         token: data.data.jwt_token,
                     }));
                     history.push("/home-page");
-                }
-                else {
+                } else {
                     alert(data.errors.msg);
                 }
             })
@@ -109,7 +110,7 @@ const LoginPage = () => {
                     </div>
 
                     <div className={myStyle.formData}>
-                        <form onSubmit={submitHandlar} autoComplete="off">
+                        <form onSubmit={submitHandler} autoComplete="off">
 
                             <Box className={myStyle.formIcon}>
                                 <EmailIcon />
@@ -160,9 +161,9 @@ const LoginPage = () => {
                             <Box className={myStyle.loginBtn}>
                                 <Button type="submit"
                                     color="secondary"
-                                    disabled={isLoading ? true : false}
+                                    disabled={isLoading}
                                     variant="contained">
-                                    {isLoading ? "Loadding..." : "Login"}
+                                    {isLoading ? "Loading..." : "Login"}
                                 </Button>
                             </Box>
 
@@ -176,7 +177,7 @@ const LoginPage = () => {
                 </div>
             </Container>
 
-        </Fragment >
+        </Fragment>
     );
 }
 

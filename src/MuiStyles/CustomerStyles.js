@@ -23,6 +23,7 @@ export const useStyles = makeStyles((theme) => ({
         "& button": {
             margin: "8px 0px",
             fontSize: "13px",
+            color: "white",
             backgroundColor: "#9A1752",
             "&:hover": {
                 backgroundColor: "#f8d3e4",

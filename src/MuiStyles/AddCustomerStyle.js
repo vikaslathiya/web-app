@@ -12,14 +12,14 @@ export const useStyles = makeStyles((theme) => ({
     form: {
         "& div": {
             display: "flex",
-            justifyContent: "center"
+            justifyContent: "space-between"
         },
         "& .MuiTextField-root": {
             margin: "8px",
             width: '25ch',
         },
         "& div .MuiFormControl-root": {
-            width: "40%",
+            width: "45%",
             margin: "8px 20px",
         },
         "& div .MuiFormControl-root .MuiFormLabel-root": {
@@ -32,16 +32,13 @@ export const useStyles = makeStyles((theme) => ({
     selectInput: {
         "& .MuiFormControl-root": {
             width: "91% !important",
+
         },
         "& .MuiFormControl-root .MuiOutlinedInput-root": {
             margin: "0px -19px !important"
         },
     },
     radioBtn: {
-        "&": {
-            justifyContent: "flex-start !important",
-            marginLeft: "80px",
-        },
         "& .MuiFormGroup-root .MuiFormLabel-root": {
             color: "#4a4a4a",
         },
@@ -51,23 +48,23 @@ export const useStyles = makeStyles((theme) => ({
             width: "fit-content"
         },
         "& .MuiFormGroup-root .MuiFormControlLabel-root": {
-            marginLeft: "0px",
+            marginLeft: "6px",
             marginRight: "6px",
         },
         "& .MuiFormGroup-root .MuiFormControlLabel-root .MuiRadio-root": {
-            color: "#9A1752"
+            color: "#9A1752",
+            marginRight: "4px"
         }
     },
     formBtn: {
         "&": {
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "center !important",
         },
         "& button": {
             margin: "10px 15px",
             borderColor: "black",
             color: "black",
-
         },
         "& button:nth-child(2)": {
             backgroundColor: "#9A1752",

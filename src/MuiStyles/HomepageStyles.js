@@ -1,5 +1,5 @@
-import {styled} from '@mui/material/styles';
-import {makeStyles, withStyles} from "@material-ui/core/styles";
+import { styled } from '@mui/material/styles';
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import MuiListItem from "@material-ui/core/ListItem";
 import MuiDrawer from '@mui/material/Drawer';
 
@@ -13,7 +13,7 @@ export const useStyles = makeStyles((theme) => ({
             // margin: "5px 10px",
         },
         "& .MuiAppBar-positionSticky": {
-           position: "sticky",
+            position: "sticky",
         },
         "& .MuiToolbar-root": {
             backgroundColor: "white",
@@ -62,6 +62,7 @@ export const useStyles = makeStyles((theme) => ({
             top: "70px",
             right: "20px",
             display: "grid",
+
         },
         "& button": {
             backgroundColor: "white",
@@ -110,8 +111,8 @@ export const closedMixin = (theme) => ({
     },
 });
 
-export const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
-    ({theme, open}) => ({
+export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+    ({ theme, open }) => ({
         width: "253px",
         flexShrink: 0,
         whiteSpace: 'nowrap',
