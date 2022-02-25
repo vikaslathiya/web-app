@@ -72,7 +72,7 @@ const AppPages = (props) => {
         default:
             return;
     }
-}
 
+}
 
 export default AppPages;

@@ -1,22 +1,23 @@
 import React, {Fragment, useState} from "react";
-import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import {FormLabel, RadioGroup, FormControlLabel, Radio} from "@mui/material";
-import {Container} from "@mui/material";
-import {useStyles} from "../../MuiStyles/AddCustomerStyle";
-import TextField from '@mui/material/TextField';
-import {useDispatch, useSelector} from "react-redux";
-import {userDataAction} from "../store/userDataReducer";
-import {useHistory} from "react-router-dom";
-import {Button, MenuItem} from "@material-ui/core";
-import {editCustomerData} from "../store/EditData";
 import axios from "axios";
+
+import {Box, FormControl, OutlinedInput, FormLabel, Container} from '@mui/material';
+import {RadioGroup, FormControlLabel, Radio, TextField} from '@mui/material';
+import {Button, MenuItem} from "@material-ui/core";
+
+import {useStyles} from "../../MuiStyles/AddCustomerStyle";
+import {userDataAction} from "../store/userDataReducer";
+import {editCustomerData} from "../store/EditData"
+
+import {useDispatch, useSelector} from "react-redux";
+
+import {useHistory} from "react-router-dom";
 
 
 const AddCustomer = () => {
     const editCustomer = useSelector(state => state.getCustomers.editable)
     const editMode = useSelector(state => state.getCustomers.editMode)
+    const isLoading = useSelector(state => state.getCustomers.isLoading)
     const dispatch = useDispatch();
     const history = useHistory();
     const [inputValue, setInputValue] = useState(editMode ? editCustomer : "");
@@ -29,34 +30,44 @@ const AddCustomer = () => {
     const webToken = localStorage.getItem("authToken");
     console.log(inputValue);
 
-    const addFormHandler = (e) => {
+    const addFormHandler = async (e) => {
         e.preventDefault();
 
         console.log("clicked")
 
-        if (editMode) {
-            // redux thunk function call
-            dispatch(editCustomerData(inputValue, webToken));
+        if (inputValue.firstName !== "" || inputValue.familyName !== "" || inputValue.contactNumber !== "") {
 
-            // const users = await axios.put("https://d.jeweltrace.in/customer/", inputValue, {
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         // "Access-Control-Allow-Origin": 'origin-list',
-            //         "x-web-token": jwtToken,
-            //     }
-            // })
+            if (editMode) {
+                // redux thunk function call
+                await dispatch(editCustomerData(inputValue, webToken));
+
+                // const users = await axios.put("https://d.jeweltrace.in/customer/", inputValue, {
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //         // "Access-Control-Allow-Origin": 'origin-list',
+                //         "x-web-token": jwtToken,
+                //     }
+                // })
+                dispatch(userDataAction.closeEditCustomer());
+            } else {
+
+                const users = await axios.post("https://d.jeweltrace.in/customer/", inputValue, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // "Access-Control-Allow-Origin": 'origin-list',
+                        "x-web-token": webToken,
+                    }
+                })
+                console.log(users)
+            }
+            history.push("/home-page/customers");
+
         } else {
-            const users = axios.post("https://d.jeweltrace.in/customer/", inputValue, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    // "Access-Control-Allow-Origin": 'origin-list',
-                    "x-web-token": webToken,
-                }
-            })
-            console.log(users)
+
+            alert("Enter required Fields!")
         }
 
-        history.goBack();
+
     }
 
     const cancelFormHandler = (e) => {
@@ -257,7 +268,11 @@ const AddCustomer = () => {
                     </div>
                     <div className={myStyle.formBtn}>
                         <Button variant="outlined" onClick={cancelFormHandler}>Cancel</Button>
-                        <Button variant="contained" onClick={addFormHandler}>{editMode ? "Edit" : "Add"}</Button>
+                        {!isLoading &&
+                            <Button variant="contained" onClick={addFormHandler}
+                                    disableRipple>{editMode ? "Edit" : "Add"}</Button>}
+                        {isLoading && <Button disabled={isLoading}
+                                              variant="contained">{editMode ? "Updating..." : "Adding..."}</Button>}
                     </div>
                 </Box>
             </div>

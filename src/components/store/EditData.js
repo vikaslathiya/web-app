@@ -4,27 +4,29 @@ import {userDataAction} from "./userDataReducer";
 
 export const editCustomerData = (getData, token) => {
     return async (dispatch) => {
-
-        console.log(getData, token);
+    dispatch(userDataAction.editCustomer({load: true}))
 
         const sendRequest = async () => {
             const users = await axios.put("https://d.jeweltrace.in/customer/", getData, {
                 headers: {
                     'Content-Type': 'application/json',
                     "x-web-token": token,
+                    // "Access-Control-Allow-Origin": 'true',
                     "Access-Control-Allow-Origin": 'origin-list',
                 }
+            }).then(res => {
+                console.log(res);
             })
-
+            console.log(users);
             if (!users.ok) {
                 throw new Error("Update customer data failed!");
             }
-            console.log(users);
         }
 
         try {
             await sendRequest();
-            dispatch(userDataAction.closeEditCustomer());
+            dispatch(userDataAction.editCustomer({load: false}));
+
         } catch (e) {
             alert(e);
         }

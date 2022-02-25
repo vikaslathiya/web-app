@@ -12,6 +12,7 @@ const loginSlice = createSlice({
             state.isLogin = false;
             localStorage.removeItem("authToken");
             localStorage.removeItem("user");
+            localStorage.removeItem("currentPath")
         }
     }
 })

@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useCallback, useEffect, useState} from 'react';
 
 import {useDispatch} from 'react-redux';
 import {loginAction} from '../store/loginReducer';
@@ -21,7 +21,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
 import Grid from '@mui/material/Grid';
 
-import {Link, Route, Switch} from 'react-router-dom';
+import {Link, Route, Switch, useLocation} from 'react-router-dom';
 import {useHistory, useRouteMatch} from 'react-router-dom';
 
 import {useStyles, Drawer, ListItem} from '../../MuiStyles/HomepageStyles';
@@ -33,8 +33,10 @@ const HomePage = () => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const dispatch = useDispatch();
     const history = useHistory();
+    const location = useLocation();
     const {path, url} = useRouteMatch();
 
+    localStorage.setItem("currentPath", location.pathname);
 
     const jwtToken = localStorage.getItem("authToken");
 
@@ -57,11 +59,13 @@ const HomePage = () => {
         history.push("/auth");
     }
 
+
+
     // toggle logout button
-    const toggleMenuHandler = (e) => {
-        e.preventDefault();
+    const toggleMenuHandler = useCallback((event) => {
+        event.preventDefault();
         setToggleMenu(!toggleMenu);
-    }
+    }, [toggleMenu]);
 
     // change title name
     const titleChangeHandler = (name) => {

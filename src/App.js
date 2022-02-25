@@ -4,7 +4,7 @@ import LoginPage from './components/pages/LoginPage';
 import HomePage from './components/pages/HomePage';
 // import DashboardPage from "./components/pages/DashboardPage";
 import {useSelector} from 'react-redux';
-import {Route, Switch, Redirect} from 'react-router-dom';
+import {Route, Switch, Redirect, useLocation, useRouteMatch} from 'react-router-dom';
 
 
 function App() {

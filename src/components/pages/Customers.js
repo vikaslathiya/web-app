@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import React, {Fragment, useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux';
+import {useHistory, useRouteMatch} from 'react-router-dom';
 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -12,12 +12,13 @@ import TableRow from '@mui/material/TableRow';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box } from '@mui/material';
+import {Box} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, TablePagination } from '@material-ui/core';
+import {Button, TablePagination} from '@material-ui/core';
 
-import { Search, SearchIconWrapper, StyledInputBase, useStyles } from '../../MuiStyles/CustomerStyles';
-import { userDataAction } from "../store/userDataReducer";
+import {Search, SearchIconWrapper, StyledInputBase, useStyles} from '../../MuiStyles/CustomerStyles';
+import {userDataAction} from "../store/userDataReducer";
+import axios from "axios";
 
 const Customers = () => {
     const [page, setPage] = useState(0);
@@ -43,13 +44,13 @@ const Customers = () => {
     };
 
     console.log(userData)
-    let data;
+
     const searchChangeHandler = (e) => {
         e.preventDefault();
+        console.log(e.target.value)
         const searchCustomer = userData.filter(user => {
-            data = user.contactNumber.includes(e.target.value)
-                || user.firstName.toLowerCase().includes(e.target.value.toLowerCase())
-                || user.email.includes(e.target.value);
+            const data = user.firstName.toLowerCase().includes(e.target.value.toLowerCase())
+                || user.email.includes(e.target.value)  // || user.contactNumber.includes(e.target.value)
             return data;
         });
         setSearch(searchCustomer);
@@ -59,25 +60,37 @@ const Customers = () => {
     const NoCustomer = customer.length === 0;
 
 
-
     const addCustomerHandler = () => {
         history.push(`${match.url}/add-customer`)
     };
 
     const editCustomerHandler = (row) => {
-        dispatch(userDataAction.editCustomer({ edit: row }));
+        dispatch(userDataAction.editCustomer({edit: row}));
         history.push(`${match.url}/add-customer`)
+    }
+
+    const webToken = localStorage.getItem("authToken");
+    const deleteCustomerHandlar = (row) => {
+        axios.delete("https://d.jeweltrace.in/customer/", {
+            data: {row},
+            headers: {
+                'Content-Type': 'application/json',
+                "x-web-token": webToken,
+            }
+        }).then(res => {
+            console.log(res)
+        })
     }
 
     // create columns for table
     const columns = [
-        { id: 'firstName', label: 'NAME', align: 'center', minWidth: 140 },
-        { id: 'contactNumber', label: 'TEL', align: 'center', minWidth: 100 },
-        { id: 'email', label: 'EMAIL', minWidth: 150, align: 'center' },
-        { id: 'companyName', label: 'COMPANY', minWidth: 100, align: 'center' },
-        { id: 'itemTotal', label: 'TOTAL NO. PURCHASES', minWidth: 125, align: 'center' },
-        { id: 'priceTotal', label: 'TOTAL PURCHASES VALUE', minWidth: 172, align: 'center' },
-        { id: 'action', label: 'ACTION', minWidth: 120, align: 'center' },
+        {id: 'firstName', label: 'NAME', align: 'center', minWidth: 140},
+        {id: 'contactNumber', label: 'TEL', align: 'center', minWidth: 100},
+        {id: 'email', label: 'EMAIL', minWidth: 150, align: 'center'},
+        {id: 'companyName', label: 'COMPANY', minWidth: 100, align: 'center'},
+        {id: 'itemTotal', label: 'TOTAL NO. PURCHASES', minWidth: 125, align: 'center'},
+        {id: 'priceTotal', label: 'TOTAL PURCHASES VALUE', minWidth: 172, align: 'center'},
+        {id: 'action', label: 'ACTION', minWidth: 120, align: 'center'},
     ];
 
     // mui styles
@@ -88,10 +101,10 @@ const Customers = () => {
             <Box>
                 <Search>
                     <StyledInputBase placeholder="Search here…"
-                        onChange={searchChangeHandler}
-                        inputProps={{ 'aria-label': 'search' }} />
+                                     onChange={searchChangeHandler}
+                                     inputProps={{'aria-label': 'search'}}/>
                     <SearchIconWrapper>
-                        <SearchIcon />
+                        <SearchIcon/>
                     </SearchIconWrapper>
                 </Search>
 
@@ -105,24 +118,24 @@ const Customers = () => {
                 </Box>
 
             </Box>
-            <Paper sx={{ width: '99.5%' }}>
-                <TableContainer sx={{ maxHeight: "345px" }}>
-                    <Table stickyHeader aria-label="sticky table" sx={{ overflowX: 'hidden' }}>
+            <Paper sx={{width: '99.5%'}}>
+                <TableContainer sx={{maxHeight: "345px"}}>
+                    <Table stickyHeader aria-label="sticky table" sx={{overflowX: 'hidden'}}>
                         <TableHead>
                             <TableRow>
                                 {columns.map((column) => (<TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    sx={{
-                                        minWidth: column.minWidth,
-                                        color: "white",
-                                        backgroundColor: "#9A1752",
-                                        fontWeight: "bold",
-                                        padding: "10px",
-                                    }}
-                                >
-                                    {column.label}
-                                </TableCell>
+                                        key={column.id}
+                                        align={column.align}
+                                        sx={{
+                                            minWidth: column.minWidth,
+                                            color: "white",
+                                            backgroundColor: "#9A1752",
+                                            fontWeight: "bold",
+                                            padding: "10px",
+                                        }}
+                                    >
+                                        {column.label}
+                                    </TableCell>
                                 ))}
                             </TableRow>
                         </TableHead>
@@ -141,9 +154,9 @@ const Customers = () => {
                                                     <TableCell key={column.id} align={column.align}>
                                                         {value}
                                                         {column.id === "action" && <div className={myStyle.icons}>
-                                                            <VisibilityIcon />
-                                                            <EditIcon onClick={() => editCustomerHandler(row)} />
-                                                            <DeleteIcon />
+                                                            <VisibilityIcon/>
+                                                            <EditIcon onClick={() => editCustomerHandler(row)}/>
+                                                            <DeleteIcon onClick={() => deleteCustomerHandlar(row)}/>
                                                         </div>}
                                                     </TableCell>
                                                 );
@@ -153,7 +166,7 @@ const Customers = () => {
                                 })}
                         </TableBody>
                     </Table>
-                    {NoCustomer && <h4 style={{ textAlign: "center" }}>No Customer Found!</h4>}
+                    {NoCustomer && <h4 style={{textAlign: "center"}}>No Customer Found!</h4>}
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25, 100]}

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const userData = createSlice({
     name: "userDetails",
-    initialState: { users: [], editMode: false, editable: null },
+    initialState: { users: [], editMode: false, isLoading: false,  editable: null },
     reducers: {
         getCustomer(state, action) {
             const user = action.payload.users;
@@ -14,6 +14,7 @@ const userData = createSlice({
         },
         editCustomer(state, action) {
             state.editMode = true;
+            state.isLoading = action.payload.load;
             state.editable = action.payload.edit;
         },
         closeEditCustomer(state) {

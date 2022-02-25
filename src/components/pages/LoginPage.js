@@ -1,7 +1,7 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, {Fragment, useEffect, useState} from "react";
 
 import logo from "../../img/logo.jpeg"
-import { loginAction } from "../store/loginReducer";
+import {loginAction} from "../store/loginReducer";
 
 import {
     Box, Button, Checkbox, Container, FormControl,
@@ -12,18 +12,19 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import InputLabel from '@mui/material/InputLabel';
 import Input from '@mui/material/Input';
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {useHistory} from "react-router-dom";
 
-import { useStyle } from "../../MuiStyles/LoginStyles";
+import {useStyle} from "../../MuiStyles/LoginStyles";
 
 
 const LoginPage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [isLoading, setIsLoading] = useState(false);
+
 
     // initial values of email and password
     const [values, setValues] = useState({
@@ -36,11 +37,16 @@ const LoginPage = () => {
     useEffect(() => {
         const loggedIn = localStorage.getItem("authToken");
         if (loggedIn) {
-            dispatch(loginAction.login({ isLogin: true, token: loggedIn }));
-            // history.replace(`${match.url}`);
+            dispatch(loginAction.login({isLogin: true, token: loggedIn}));
         }
     }, [dispatch]);
 
+    useEffect(()=> {
+        const getPath = localStorage.getItem("currentPath")
+        if (getPath) {
+            history.replace(getPath);
+        }
+    },[])
 
 
     // style for input element
@@ -56,7 +62,7 @@ const LoginPage = () => {
 
     // access the input value
     const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
+        setValues({...values, [prop]: event.target.value});
     };
 
     // form submit 
@@ -87,7 +93,7 @@ const LoginPage = () => {
                 if (data.status) {
                     localStorage.setItem("user", JSON.stringify(data));
                     dispatch(loginAction.login({
-                        token: data.data.jwt_token,
+                        token: data.data.web_token[0],
                     }));
                     history.push("/home-page");
                 } else {
@@ -106,27 +112,27 @@ const LoginPage = () => {
                 <div className={myStyle.container}>
 
                     <div className={myStyle.logo}>
-                        <img src={logo} alt="logo" />
+                        <img src={logo} alt="logo"/>
                     </div>
 
                     <div className={myStyle.formData}>
                         <form onSubmit={submitHandler} autoComplete="off">
 
                             <Box className={myStyle.formIcon}>
-                                <EmailIcon />
+                                <EmailIcon/>
                                 <TextField id="input-with-sx"
-                                    className={myStyle.borderColor}
-                                    label="Username"
-                                    variant="standard"
-                                    onChange={handleChange('email')}
-                                    sx={{ width: '30ch' }}
+                                           className={myStyle.borderColor}
+                                           label="Username"
+                                           variant="standard"
+                                           onChange={handleChange('email')}
+                                           sx={{width: '30ch'}}
                                 />
 
                             </Box>
 
                             <Box className={myStyle.formIcon}>
-                                <LockIcon />
-                                <FormControl className={myStyle.borderColor} sx={{ width: '30ch' }} variant="standard">
+                                <LockIcon/>
+                                <FormControl className={myStyle.borderColor} sx={{width: '30ch'}} variant="standard">
                                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                                     <Input
                                         id="standard-adornment-password"
@@ -140,7 +146,7 @@ const LoginPage = () => {
                                                     aria-label="toggle password visibility"
                                                     onClick={handleClickShowPassword}
                                                 >
-                                                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    {values.showPassword ? <VisibilityOff/> : <Visibility/>}
                                                 </IconButton>
                                             </InputAdornment>
                                         }
@@ -150,7 +156,7 @@ const LoginPage = () => {
 
                             <Box className={myStyle.forgetPassword}>
                                 <FormControlLabel
-                                    control={<Checkbox defaultChecked size="small" />}
+                                    control={<Checkbox defaultChecked size="small"/>}
                                     label="Secure Login"
                                 />
                                 <Link color="secondary" href="#" underline="none">
@@ -160,9 +166,9 @@ const LoginPage = () => {
 
                             <Box className={myStyle.loginBtn}>
                                 <Button type="submit"
-                                    color="secondary"
-                                    disabled={isLoading}
-                                    variant="contained">
+                                        color="secondary"
+                                        disabled={isLoading}
+                                        variant="contained">
                                     {isLoading ? "Loading..." : "Login"}
                                 </Button>
                             </Box>
