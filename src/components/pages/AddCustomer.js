@@ -7,7 +7,7 @@ import {Button, MenuItem} from "@material-ui/core";
 
 import {useStyles} from "../../MuiStyles/AddCustomerStyle";
 import {userDataAction} from "../store/userDataReducer";
-// import {editCustomerData} from "../store/EditData"
+import {editCustomerData} from "../store/EditData"
 
 import {useDispatch, useSelector} from "react-redux";
 
@@ -40,16 +40,16 @@ const AddCustomer = () => {
             console.log("clicked")
             if (editMode) {
                 // redux thunk function call
-                // await dispatch(editCustomerData(inputValue, webToken));
+                await dispatch(editCustomerData(inputValue, webToken));
 
-                const users = await axios.put("https://d.jeweltrace.in/customer/", inputValue, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        // "Access-Control-Allow-Origin": 'origin-list',
-                        "x-web-token": webToken,
-                    }
-                })
-                console.log(users)
+                // const users = await axios.put("https://d.jeweltrace.in/customer/", inputValue, {
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //         // "Access-Control-Allow-Origin": 'origin-list',
+                //         "x-web-token": webToken,
+                //     }
+                // })
+                // console.log(users)
                 dispatch(userDataAction.closeEditCustomer());
             } else {
 
@@ -62,13 +62,9 @@ const AddCustomer = () => {
                 console.log(users)
             }
             history.push("/home-page/customers");
-
         } else {
-
             alert("Enter required Fields!")
         }
-
-
     }
 
     const cancelFormHandler = (e) => {

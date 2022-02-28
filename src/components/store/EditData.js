@@ -30,6 +30,5 @@ export const editCustomerData = (getData, token) => {
         } catch (e) {
             alert(e);
         }
-
     }
 }
