@@ -46,7 +46,7 @@ const LoginPage = () => {
         if (getPath) {
             history.replace(getPath);
         }
-    },[])
+    },[history])
 
 
     // style for input element

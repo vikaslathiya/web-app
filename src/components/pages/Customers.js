@@ -29,8 +29,7 @@ const Customers = () => {
     const dispatch = useDispatch();
 
     // get customers data from store
-    const userData = useSelector(state => state.getCustomers.users)
-
+    const userData = useSelector(state => state.getCustomers.users);
 
     // change pages 
     const handleChangePage = (event, newPage) => {
@@ -42,8 +41,6 @@ const Customers = () => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-
-    console.log(userData)
 
     const searchChangeHandler = (e) => {
         e.preventDefault();
@@ -58,7 +55,7 @@ const Customers = () => {
 
     let customer = search !== "" ? search : userData;
     const NoCustomer = customer.length === 0;
-
+    console.log(customer)
 
     const addCustomerHandler = () => {
         history.push(`${match.url}/add-customer`)

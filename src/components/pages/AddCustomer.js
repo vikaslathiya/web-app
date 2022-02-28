@@ -7,7 +7,7 @@ import {Button, MenuItem} from "@material-ui/core";
 
 import {useStyles} from "../../MuiStyles/AddCustomerStyle";
 import {userDataAction} from "../store/userDataReducer";
-import {editCustomerData} from "../store/EditData"
+// import {editCustomerData} from "../store/EditData"
 
 import {useDispatch, useSelector} from "react-redux";
 
@@ -32,29 +32,30 @@ const AddCustomer = () => {
 
     const addFormHandler = async (e) => {
         e.preventDefault();
+        const formValidate = inputValue.firstName !== undefined &&
+            inputValue.familyName !== undefined &&
+            inputValue.contactNumber !== undefined
 
-        console.log("clicked")
-
-        if (inputValue.firstName !== "" || inputValue.familyName !== "" || inputValue.contactNumber !== "") {
-
+        if (formValidate) {
+            console.log("clicked")
             if (editMode) {
                 // redux thunk function call
-                await dispatch(editCustomerData(inputValue, webToken));
+                // await dispatch(editCustomerData(inputValue, webToken));
 
-                // const users = await axios.put("https://d.jeweltrace.in/customer/", inputValue, {
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //         // "Access-Control-Allow-Origin": 'origin-list',
-                //         "x-web-token": jwtToken,
-                //     }
-                // })
+                const users = await axios.put("https://d.jeweltrace.in/customer/", inputValue, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // "Access-Control-Allow-Origin": 'origin-list',
+                        "x-web-token": webToken,
+                    }
+                })
+                console.log(users)
                 dispatch(userDataAction.closeEditCustomer());
             } else {
 
                 const users = await axios.post("https://d.jeweltrace.in/customer/", inputValue, {
                     headers: {
                         'Content-Type': 'application/json',
-                        // "Access-Control-Allow-Origin": 'origin-list',
                         "x-web-token": webToken,
                     }
                 })
@@ -73,7 +74,7 @@ const AddCustomer = () => {
     const cancelFormHandler = (e) => {
         e.preventDefault();
         dispatch(userDataAction.closeEditCustomer());
-        history.goBack();
+        history.push("/home-page/customers");
     }
 
     const myStyle = useStyles();

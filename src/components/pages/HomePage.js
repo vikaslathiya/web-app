@@ -1,4 +1,4 @@
-import React, {Fragment, useCallback, useEffect, useState} from 'react';
+import React, {Fragment, useCallback, useState} from 'react';
 
 import {useDispatch} from 'react-redux';
 import {loginAction} from '../store/loginReducer';
@@ -30,7 +30,8 @@ const HomePage = () => {
     const [open, setOpen] = useState(false);
     const [toggleMenu, setToggleMenu] = useState(false);
     const [title, setTitle] = useState(null);
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const prevIndex = localStorage.getItem("selectedIndex")
+    const [selectedIndex, setSelectedIndex] = useState(prevIndex ? Number(prevIndex) : 0);
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
@@ -40,8 +41,8 @@ const HomePage = () => {
 
     const jwtToken = localStorage.getItem("authToken");
 
-    // logut user
-    const logoutHandlar = async () => {
+    // logout user
+    const logoutHandler = async () => {
         await fetch("https://d.jeweltrace.in/login/clearsession", {
             method: "POST",
             body: JSON.stringify({
@@ -83,6 +84,7 @@ const HomePage = () => {
     // set drawer link to selected
     const handleListItemClick = (event, index) => {
         // event.preventDefault();
+        localStorage.setItem("selectedIndex", index)
         setSelectedIndex(index);
     };
 
@@ -115,7 +117,7 @@ const HomePage = () => {
                 <Button variant="contained" color='primary'>
                     Profile
                 </Button>
-                <Button onClick={logoutHandlar} variant="contained">
+                <Button onClick={logoutHandler} variant="contained">
                     Logout
                 </Button>
             </div>}
