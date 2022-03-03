@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 
-export const useStyle = makeStyles(style => ({
+export const useStyle = makeStyles(() => ({
     container: {
         "&": {
             boxShadow: "0 0 4px #8d8d8d",
