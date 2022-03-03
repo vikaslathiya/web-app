@@ -1,9 +1,9 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { styled } from '@mui/material/styles';
+import {makeStyles} from "@material-ui/core/styles";
+import {styled} from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 
 // customer page mui styles
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(() => ({
     icons: {
         "& .MuiSvgIcon-root": {
             fontSize: "18px",
@@ -31,11 +31,23 @@ export const useStyles = makeStyles((theme) => ({
             }
         },
     },
+    // inventory page styles
+    searchBar: {
+        "&": {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            margin: "6px 18px",
+        },
+        "& h4": {
+            margin: "10px",
+        }
+    }
 }));
 
 
 // mui search functions
-export const Search = styled('div')(({ theme }) => ({
+export const Search = styled('div')(({theme}) => ({
     position: 'relative',
     marginLeft: 0,
     width: '100%',
@@ -45,7 +57,7 @@ export const Search = styled('div')(({ theme }) => ({
     },
 }));
 
-export const SearchIconWrapper = styled('div')(({ theme }) => ({
+export const SearchIconWrapper = styled('div')(({theme}) => ({
     padding: theme.spacing(0, 2),
     position: 'absolute',
     left: "200px",
@@ -56,7 +68,7 @@ export const SearchIconWrapper = styled('div')(({ theme }) => ({
     cursor: "pointer"
 }));
 
-export const StyledInputBase = styled(InputBase)(({ theme }) => ({
+export const StyledInputBase = styled(InputBase)(({theme}) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 0, 1, 1),

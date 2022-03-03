@@ -1,6 +1,6 @@
 // thunk function for edit customer data
 import axios from "axios";
-import {userDataAction} from "./userDataReducer";
+import {userDataAction} from "../../store/userDataReducer";
 
 export const editCustomerData = (getData, token) => {
     return async (dispatch) => {
@@ -9,10 +9,8 @@ export const editCustomerData = (getData, token) => {
         const sendRequest = async () => {
             const users = await axios.put("https://d.jeweltrace.in/customer/", getData, {
                 headers: {
-                    'Content-Type': 'application/json',
                     "x-web-token": token,
-                    // "Access-Control-Allow-Origin": '*',
-                    // "Access-Control-Allow-Origin": 'origin-list',
+                    'Content-Type': 'application/json',
                 }
             }).then(res => {
                 console.log(res);
@@ -31,4 +29,5 @@ export const editCustomerData = (getData, token) => {
             alert(e);
         }
     }
+
 }

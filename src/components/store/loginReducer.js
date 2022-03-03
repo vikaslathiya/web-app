@@ -1,8 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 
 const loginSlice = createSlice({
     name: "userStatus",
-    initialState: { isLogin: false },
+    initialState: {isLogin: false},
     reducers: {
         login(state, action) {
             state.isLogin = action.payload.isLogin;
@@ -13,6 +13,7 @@ const loginSlice = createSlice({
             localStorage.removeItem("authToken");
             localStorage.removeItem("user");
             localStorage.removeItem("currentPath")
+            localStorage.removeItem("selectedIndex")
         }
     }
 })

@@ -1,7 +1,7 @@
 import React, {Fragment, useEffect, useState} from "react";
 
-import logo from "../../img/logo.jpeg"
-import {loginAction} from "../store/loginReducer";
+import logo from "../../../img/logo.jpeg"
+import {loginAction} from "../../store/loginReducer";
 
 import {
     Box, Button, Checkbox, Container, FormControl,
@@ -17,7 +17,7 @@ import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
 
-import {useStyle} from "../../MuiStyles/LoginStyles";
+import {useStyle} from "./LoginStyles";
 
 
 const LoginPage = () => {

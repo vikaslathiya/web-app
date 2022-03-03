@@ -1,11 +1,11 @@
 import React, {Fragment, useCallback, useState} from 'react';
 
 import {useDispatch} from 'react-redux';
-import {loginAction} from '../store/loginReducer';
+import {loginAction} from '../../store/loginReducer';
 
-import logo from "../../img/Capture.JPG";
+import logo from "../../../img/Capture.JPG";
 import AppPages from './AppPages';
-import DashboardPage from './DashboardPage';
+import DashboardPage from '../Dashboard/DashboardPage';
 
 import {
     AppBar, Box, Button, Toolbar, Typography, CssBaseline,
@@ -24,7 +24,7 @@ import Grid from '@mui/material/Grid';
 import {Link, Route, Switch, useLocation} from 'react-router-dom';
 import {useHistory, useRouteMatch} from 'react-router-dom';
 
-import {useStyles, Drawer, ListItem} from '../../MuiStyles/HomepageStyles';
+import {useStyles, Drawer, ListItem} from './HomepageStyles';
 
 const HomePage = () => {
     const [open, setOpen] = useState(false);
@@ -39,7 +39,7 @@ const HomePage = () => {
 
     localStorage.setItem("currentPath", location.pathname);
 
-    const jwtToken = localStorage.getItem("authToken");
+    const webToken = localStorage.getItem("authToken");
 
     // logout user
     const logoutHandler = async () => {
@@ -52,14 +52,13 @@ const HomePage = () => {
             }),
             headers: {
                 "Content-Type": "application/json",
-                "x-web-token": jwtToken,
+                "x-web-token": webToken,
             },
         })
         dispatch(loginAction.logout());
 
         history.push("/auth");
     }
-
 
 
     // toggle logout button

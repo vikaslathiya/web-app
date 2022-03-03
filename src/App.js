@@ -1,8 +1,7 @@
 import './App.css';
 import React, {Fragment} from 'react';
-import LoginPage from './components/pages/LoginPage';
-import HomePage from './components/pages/HomePage';
-// import DashboardPage from "./components/pages/DashboardPage";
+import LoginPage from './components/pages/LoginPage/LoginPage';
+import HomePage from './components/pages/HomePage/HomePage';
 import {useSelector} from 'react-redux';
 import {Route, Switch, Redirect} from 'react-router-dom';
 
@@ -12,7 +11,6 @@ function App() {
 
     return (
         <Fragment>
-
             <Switch>
 
                 {isLogin && <Route path="/home-page">

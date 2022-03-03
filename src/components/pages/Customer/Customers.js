@@ -1,5 +1,5 @@
-import React, {Fragment, useState} from 'react'
-import {useDispatch, useSelector} from 'react-redux';
+import React, {Fragment, useCallback, useEffect, useState} from 'react'
+import {useDispatch} from 'react-redux';
 import {useHistory, useRouteMatch} from 'react-router-dom';
 
 import Paper from '@mui/material/Paper';
@@ -16,11 +16,12 @@ import {Box} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import {Button, TablePagination} from '@material-ui/core';
 
-import {Search, SearchIconWrapper, StyledInputBase, useStyles} from '../../MuiStyles/CustomerStyles';
-import {userDataAction} from "../store/userDataReducer";
+import {Search, SearchIconWrapper, StyledInputBase, useStyles} from './CustomerStyles';
+import {userDataAction} from "../../store/userDataReducer";
 import axios from "axios";
 
 const Customers = () => {
+    const [userData, setUserData] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [search, setSearch] = useState("");
@@ -28,15 +29,33 @@ const Customers = () => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    // get customers data from store
-    const userData = useSelector(state => state.getCustomers.users);
+    const user = JSON.parse(localStorage.getItem("user"));
+    const rootInfo = user.data.rooInfo;
 
-    // change pages 
+    const fetchCustomers = useCallback(() => {
+        const webToken = localStorage.getItem("authToken");
+
+        axios.get(`https://d.jeweltrace.in/customer/new?page_no=0&limit=10&rootInfo=company&id=${rootInfo.companyId}&search=`, {
+            headers: {
+                "x-web-token": webToken,
+            }
+        }).then(res => {
+            console.log(res)
+            setUserData(res.data.data_array)
+        })
+    }, [setUserData])
+
+
+    useEffect(() => {
+        fetchCustomers();
+    }, [fetchCustomers]);
+
+// change pages
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
-    // set rows per page 
+// set rows per page
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
@@ -45,8 +64,9 @@ const Customers = () => {
     const searchChangeHandler = (e) => {
         e.preventDefault();
         console.log(e.target.value)
+        let data;
         const searchCustomer = userData.filter(user => {
-            const data = user.firstName.toLowerCase().includes(e.target.value.toLowerCase())
+            data = user.firstName.toLowerCase().includes(e.target.value.toLowerCase())
                 || user.email.includes(e.target.value)  // || user.contactNumber.includes(e.target.value)
             return data;
         });
@@ -79,7 +99,7 @@ const Customers = () => {
         })
     }
 
-    // create columns for table
+// create columns for table
     const columns = [
         {id: 'firstName', label: 'NAME', align: 'center', minWidth: 140},
         {id: 'contactNumber', label: 'TEL', align: 'center', minWidth: 100},
@@ -90,7 +110,7 @@ const Customers = () => {
         {id: 'action', label: 'ACTION', minWidth: 120, align: 'center'},
     ];
 
-    // mui styles
+// mui styles
     const myStyle = useStyles();
 
     return (

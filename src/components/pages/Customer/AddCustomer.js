@@ -5,9 +5,9 @@ import {Box, FormControl, OutlinedInput, FormLabel, Container} from '@mui/materi
 import {RadioGroup, FormControlLabel, Radio, TextField} from '@mui/material';
 import {Button, MenuItem} from "@material-ui/core";
 
-import {useStyles} from "../../MuiStyles/AddCustomerStyle";
-import {userDataAction} from "../store/userDataReducer";
-import {editCustomerData} from "../store/EditData"
+import {useStyles} from "./AddCustomerStyle";
+import {userDataAction} from "../../store/userDataReducer";
+import {editCustomerData} from "./EditData"
 
 import {useDispatch, useSelector} from "react-redux";
 
