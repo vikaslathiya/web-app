@@ -1,5 +1,5 @@
 import axios from "axios";
-import {InventoryAction} from "./InventoryData";
+import {InventoryAction} from "../../store/InventoryData";
 
 export const getInventory = (page, rowsPerPage, sorting, search) => {
     const user = JSON.parse(localStorage.getItem("user"));

@@ -1,5 +1,4 @@
 import React, {Fragment, useState} from "react";
-import axios from "axios";
 
 import {Box, FormControl, OutlinedInput, FormLabel, Container} from '@mui/material';
 import {RadioGroup, FormControlLabel, Radio, TextField} from '@mui/material';
@@ -7,12 +6,10 @@ import {Button, MenuItem} from "@material-ui/core";
 
 import {useStyles} from "./AddCustomerStyle";
 import {userDataAction} from "../../store/userDataReducer";
-import {editCustomerData} from "./EditData"
+import {AddNewCustomer, editCustomerData} from "./EditData";
 
 import {useDispatch, useSelector} from "react-redux";
-
 import {useHistory} from "react-router-dom";
-
 
 const AddCustomer = () => {
     const editCustomer = useSelector(state => state.getCustomers.editable)
@@ -25,10 +22,7 @@ const AddCustomer = () => {
     const inputChange = (prop) => (e) => {
         e.preventDefault();
         setInputValue({...inputValue, [prop]: e.target.value, updatedAt: new Date().toISOString()});
-        // console.log(inputValue)
     }
-    const webToken = localStorage.getItem("authToken");
-    console.log(inputValue);
 
     const addFormHandler = async (e) => {
         e.preventDefault();
@@ -40,26 +34,10 @@ const AddCustomer = () => {
             console.log("clicked")
             if (editMode) {
                 // redux thunk function call
-                await dispatch(editCustomerData(inputValue, webToken));
-
-                // const users = await axios.put("https://d.jeweltrace.in/customer/", inputValue, {
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //         // "Access-Control-Allow-Origin": 'origin-list',
-                //         "x-web-token": webToken,
-                //     }
-                // })
-                // console.log(users)
+                await dispatch(editCustomerData(inputValue));
                 dispatch(userDataAction.closeEditCustomer());
             } else {
-
-                const users = await axios.post("https://d.jeweltrace.in/customer/", inputValue, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        "x-web-token": webToken,
-                    }
-                })
-                console.log(users)
+                await AddNewCustomer(inputValue);
             }
             history.push("/home-page/customers");
         } else {

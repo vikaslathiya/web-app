@@ -29,7 +29,6 @@ const Inventory = () => {
     // mui styles
     const myStyle = useStyles();
 
-
     // create columns for table
     const columns = [
         {id: 'sku_number', label: 'SKU', align: 'center', minWidth: 75},
@@ -103,8 +102,10 @@ const Inventory = () => {
                                         }}
                                     >
                                         {column.id === "action" ? column.label :
-                                            <div> {column.label}
-                                                <ArrowDropDownIcon style={{margin: "-6px 2px"}}/></div>}
+                                            <div>
+                                                {column.label}
+                                                <ArrowDropDownIcon style={{margin: "-6px 2px"}}/>
+                                            </div>}
                                     </TableCell>
                                 ))}
                             </TableRow>

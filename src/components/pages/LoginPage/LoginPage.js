@@ -18,13 +18,13 @@ import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
 
 import {useStyle} from "./LoginStyles";
+import {loginApp} from "./loginData";
 
 
 const LoginPage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [isLoading, setIsLoading] = useState(false);
-
 
     // initial values of email and password
     const [values, setValues] = useState({
@@ -41,13 +41,12 @@ const LoginPage = () => {
         }
     }, [dispatch]);
 
-    useEffect(()=> {
+    useEffect(() => {
         const getPath = localStorage.getItem("currentPath")
         if (getPath) {
             history.replace(getPath);
         }
-    },[history])
-
+    }, [history])
 
     // style for input element
     const myStyle = useStyle();
@@ -73,33 +72,8 @@ const LoginPage = () => {
         const validPassword = values.password !== "";
 
         if (validPassword) {
-            await fetch("https://d.jeweltrace.in/login/", {
-                method: "POST",
-                body: JSON.stringify({
-                    "username": values.email,
-                    "password": values.password,
-                    "type": "web"
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }).then(res => {
-
-                if (res.ok) {
-                    return res.json();
-                }
-            }).then(data => {
-
-                if (data.status) {
-                    localStorage.setItem("user", JSON.stringify(data));
-                    dispatch(loginAction.login({
-                        token: data.data.web_token[0],
-                    }));
-                    history.push("/home-page");
-                } else {
-                    alert(data.errors.msg);
-                }
-            })
+            await dispatch(loginApp(values.email, values.password));
+            history.push("/home-page");
         } else {
             alert("enter valid details!")
         }

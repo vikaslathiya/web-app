@@ -19,11 +19,7 @@ const AppPages = (props) => {
 
     switch (param.name) {
         case "dashboard":
-            return (
-                <>
-                    {<DashboardPage/>}
-                </>
-            );
+            return <DashboardPage/>
 
         case "inventory":
             return <Inventory/>

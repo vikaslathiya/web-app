@@ -1,5 +1,5 @@
-import React, {Fragment, useCallback, useEffect, useState} from 'react'
-import {useDispatch} from 'react-redux';
+import React, {Fragment, useEffect, useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux';
 import {useHistory, useRouteMatch} from 'react-router-dom';
 
 import Paper from '@mui/material/Paper';
@@ -18,37 +18,20 @@ import {Button, TablePagination} from '@material-ui/core';
 
 import {Search, SearchIconWrapper, StyledInputBase, useStyles} from './CustomerStyles';
 import {userDataAction} from "../../store/userDataReducer";
-import axios from "axios";
+import {FetchAllCustomers} from "./EditData";
 
 const Customers = () => {
-    const [userData, setUserData] = useState([]);
-    const [page, setPage] = useState(0);
+    const userData = useSelector(state => state.getCustomers.users)
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [search, setSearch] = useState("");
+    const [page, setPage] = useState(0);
     const match = useRouteMatch();
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const user = JSON.parse(localStorage.getItem("user"));
-    const rootInfo = user.data.rooInfo;
-
-    const fetchCustomers = useCallback(() => {
-        const webToken = localStorage.getItem("authToken");
-
-        axios.get(`https://d.jeweltrace.in/customer/new?page_no=0&limit=10&rootInfo=company&id=${rootInfo.companyId}&search=`, {
-            headers: {
-                "x-web-token": webToken,
-            }
-        }).then(res => {
-            console.log(res)
-            setUserData(res.data.data_array)
-        })
-    }, [setUserData])
-
-
     useEffect(() => {
-        fetchCustomers();
-    }, [fetchCustomers]);
+        dispatch(FetchAllCustomers())
+    }, []);
 
 // change pages
     const handleChangePage = (event, newPage) => {
@@ -73,9 +56,8 @@ const Customers = () => {
         setSearch(searchCustomer);
     };
 
-    let customer = search !== "" ? search : userData;
+    const customer = search !== "" ? search : userData;
     const NoCustomer = customer.length === 0;
-    console.log(customer)
 
     const addCustomerHandler = () => {
         history.push(`${match.url}/add-customer`)
@@ -84,19 +66,6 @@ const Customers = () => {
     const editCustomerHandler = (row) => {
         dispatch(userDataAction.editCustomer({edit: row}));
         history.push(`${match.url}/add-customer`)
-    }
-
-    const webToken = localStorage.getItem("authToken");
-    const deleteCustomerHandlar = (row) => {
-        axios.delete("https://d.jeweltrace.in/customer/", {
-            data: {row},
-            headers: {
-                'Content-Type': 'application/json',
-                "x-web-token": webToken,
-            }
-        }).then(res => {
-            console.log(res)
-        })
     }
 
 // create columns for table
@@ -173,7 +142,7 @@ const Customers = () => {
                                                         {column.id === "action" && <div className={myStyle.icons}>
                                                             <VisibilityIcon/>
                                                             <EditIcon onClick={() => editCustomerHandler(row)}/>
-                                                            <DeleteIcon onClick={() => deleteCustomerHandlar(row)}/>
+                                                            <DeleteIcon/>
                                                         </div>}
                                                     </TableCell>
                                                 );

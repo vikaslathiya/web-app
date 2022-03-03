@@ -25,6 +25,7 @@ import {Link, Route, Switch, useLocation} from 'react-router-dom';
 import {useHistory, useRouteMatch} from 'react-router-dom';
 
 import {useStyles, Drawer, ListItem} from './HomepageStyles';
+import {logoutApp} from "./HomepageData";
 
 const HomePage = () => {
     const [open, setOpen] = useState(false);
@@ -39,27 +40,12 @@ const HomePage = () => {
 
     localStorage.setItem("currentPath", location.pathname);
 
-    const webToken = localStorage.getItem("authToken");
-
     // logout user
     const logoutHandler = async () => {
-        await fetch("https://d.jeweltrace.in/login/clearsession", {
-            method: "POST",
-            body: JSON.stringify({
-                "username": "b1manager",
-                "password": "admin",
-                "type": "web"
-            }),
-            headers: {
-                "Content-Type": "application/json",
-                "x-web-token": webToken,
-            },
-        })
+        await logoutApp();
         dispatch(loginAction.logout());
-
         history.push("/auth");
     }
-
 
     // toggle logout button
     const toggleMenuHandler = useCallback((event) => {

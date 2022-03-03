@@ -1,7 +1,7 @@
 import {configureStore} from "@reduxjs/toolkit";
 import loginReducer from "./loginReducer";
 import userDataReducer from "./userDataReducer";
-import InventoryData from "../pages/Inventory/InventoryData";
+import InventoryData from "./InventoryData";
 
 const store = configureStore({
     reducer: {
