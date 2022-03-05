@@ -21,7 +21,8 @@ import {userDataAction} from "../../store/userDataReducer";
 import {FetchAllCustomers} from "./EditData";
 
 const Customers = () => {
-    const userData = useSelector(state => state.getCustomers.users)
+    const customer = useSelector(state => state.getCustomers.users)
+    const totalCustomer = useSelector(state => state.getCustomers.userData)
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
@@ -30,8 +31,8 @@ const Customers = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(FetchAllCustomers())
-    }, []);
+        dispatch(FetchAllCustomers(page, rowsPerPage, search))
+    }, [search, page, rowsPerPage]);
 
 // change pages
     const handleChangePage = (event, newPage) => {
@@ -47,16 +48,9 @@ const Customers = () => {
     const searchChangeHandler = (e) => {
         e.preventDefault();
         console.log(e.target.value)
-        let data;
-        const searchCustomer = userData.filter(user => {
-            data = user.firstName.toLowerCase().includes(e.target.value.toLowerCase())
-                || user.email.includes(e.target.value)  // || user.contactNumber.includes(e.target.value)
-            return data;
-        });
-        setSearch(searchCustomer);
+        setSearch(e.target.value);
     };
 
-    const customer = search !== "" ? search : userData;
     const NoCustomer = customer.length === 0;
 
     const addCustomerHandler = () => {
@@ -69,18 +63,34 @@ const Customers = () => {
     }
 
 // create columns for table
-    const columns = [
-        {id: 'firstName', label: 'NAME', align: 'center', minWidth: 140},
-        {id: 'contactNumber', label: 'TEL', align: 'center', minWidth: 100},
-        {id: 'email', label: 'EMAIL', minWidth: 150, align: 'center'},
-        {id: 'companyName', label: 'COMPANY', minWidth: 100, align: 'center'},
-        {id: 'itemTotal', label: 'TOTAL NO. PURCHASES', minWidth: 125, align: 'center'},
-        {id: 'priceTotal', label: 'TOTAL PURCHASES VALUE', minWidth: 172, align: 'center'},
-        {id: 'action', label: 'ACTION', minWidth: 120, align: 'center'},
-    ];
+    const columns = [{id: 'firstName', label: 'NAME', align: 'center', minWidth: 140}, {
+        id: 'contactNumber',
+        label: 'TEL',
+        align: 'center',
+        minWidth: 100
+    }, {id: 'email', label: 'EMAIL', minWidth: 150, align: 'center'}, {
+        id: 'companyName',
+        label: 'COMPANY',
+        minWidth: 100,
+        align: 'center'
+    }, {id: 'itemTotal', label: 'TOTAL NO. PURCHASES', minWidth: 125, align: 'center'}, {
+        id: 'priceTotal',
+        label: 'TOTAL PURCHASES VALUE',
+        minWidth: 172,
+        align: 'center'
+    }, {id: 'action', label: 'ACTION', minWidth: 120, align: 'center'},];
 
 // mui styles
     const myStyle = useStyles();
+    const tableCellStyle = {
+        position: "sticky",
+        right: 0,
+        minWidth: 120,
+    }
+
+    const enterHandler = () => {
+        console.log("entered")
+    }
 
     return (
         <Fragment>
@@ -95,60 +105,64 @@ const Customers = () => {
                 </Search>
 
                 <Box className={myStyle.tableTop}>
-                    <h4>Total Customers: {userData.length}</h4>
+                    <h4>Total
+                        Customers: {totalCustomer.totalRecord ? totalCustomer.totalRecord : totalCustomer.totalCustomer}</h4>
 
                     <Button variant="contained" onClick={addCustomerHandler}>
                         Add Customers
                     </Button>
-
                 </Box>
 
             </Box>
             <Paper sx={{width: '99.5%'}}>
-                <TableContainer sx={{maxHeight: "345px"}}>
-                    <Table stickyHeader aria-label="sticky table" sx={{overflowX: 'hidden'}}>
+                <TableContainer className={myStyle.tables}>
+                    <Table stickyHeader aria-label="sticky table" sx={{}}>
                         <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (<TableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        sx={{
-                                            minWidth: column.minWidth,
-                                            color: "white",
-                                            backgroundColor: "#9A1752",
-                                            fontWeight: "bold",
-                                            padding: "10px",
-                                        }}
-                                    >
-                                        {column.label}
-                                    </TableCell>
+                            <TableRow className={myStyle.tableRow}>
+                                {columns.map((column) => (
+                                    column.id === "action" ?
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align}
+                                            sx={tableCellStyle}
+                                        >
+                                            {column.label}
+                                        </TableCell> :
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align}
+                                            sx={{minWidth: column.minWidth}}
+                                            onMouseDown={enterHandler}
+                                        >
+                                            {column.label}
+                                        </TableCell>
                                 ))}
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {!NoCustomer && customer.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
-                                            {columns.map((column) => {
+                                    return (<TableRow hover role="checkbox" tabIndex={-1} key={row._id}
+                                                      className={myStyle.tableBody}>
+                                        {columns.map((column) => {
 
-                                                const value = column.id === "firstName" ?
-                                                    `${row[column.id]} ${row["familyName"]}` :
-                                                    row[column.id];
+                                            const value = column.id === "firstName" ? `${row[column.id]} ${row["familyName"]}` : row[column.id];
 
-                                                return (
-                                                    <TableCell key={column.id} align={column.align}>
-                                                        {value}
-                                                        {column.id === "action" && <div className={myStyle.icons}>
+                                            return (
+                                                column.id === "action" ?
+                                                    <TableCell key={column.id} align={column.align} sx={tableCellStyle}>
+                                                        <div className={myStyle.icons}>
                                                             <VisibilityIcon/>
                                                             <EditIcon onClick={() => editCustomerHandler(row)}/>
                                                             <DeleteIcon/>
-                                                        </div>}
+                                                        </div>
+                                                    </TableCell> :
+                                                    <TableCell key={column.id} align={column.align}>
+                                                        {value}
                                                     </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    );
+                                            );
+                                        })}
+                                    </TableRow>);
                                 })}
                         </TableBody>
                     </Table>
@@ -164,10 +178,7 @@ const Customers = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-
         </Fragment>
-
-
     );
 }
 

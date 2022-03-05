@@ -1,6 +1,7 @@
 import React, {Fragment, useEffect, useState} from 'react'
 import {Box} from "@mui/material";
-import {Search, SearchIconWrapper, StyledInputBase, useStyles} from "../Customer/CustomerStyles";
+import {Search, SearchIconWrapper, StyledInputBase} from "../Customer/CustomerStyles";
+import {useStyles} from "./InventoryStyle";
 import SearchIcon from "@mui/icons-material/Search";
 import {TablePagination} from "@material-ui/core";
 import Paper from "@mui/material/Paper";
@@ -69,6 +70,12 @@ const Inventory = () => {
         setSorting(column);
     }
 
+    const style = {
+        right: 0,
+        position: "sticky",
+        minWidth: "100px"
+    }
+
     return (
         <Fragment>
             <Box className={myStyle.searchBar}>
@@ -84,36 +91,36 @@ const Inventory = () => {
                 <h4>Total Carats: {user.totalPcs}</h4>
             </Box>
             <Paper sx={{width: '100%'}}>
-                <TableContainer sx={{maxHeight: "383px"}}>
-                    <Table stickyHeader aria-label="sticky table" sx={{overflowX: 'hidden'}}>
+                <TableContainer sx={{maxHeight: "383px"}} className={myStyle.tables}>
+                    <Table stickyHeader aria-label="sticky table">
                         <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (<TableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        onClick={() => sortingHandler(column.id)}
-                                        sx={{
-                                            minWidth: column.minWidth,
-                                            color: "white",
-                                            backgroundColor: "#9A1752",
-                                            fontWeight: "bold",
-                                            padding: "10px 0px",
-                                            cursor: "pointer"
-                                        }}
-                                    >
-                                        {column.id === "action" ? column.label :
-                                            <div>
-                                                {column.label}
-                                                <ArrowDropDownIcon style={{margin: "-6px 2px"}}/>
-                                            </div>}
-                                    </TableCell>
+                            <TableRow className={myStyle.tableCell}>
+                                {columns.map((column) => (
+                                    column.id === "action" ?
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align}
+                                            onClick={() => sortingHandler(column.id)}
+                                            sx={style}
+                                        >
+                                            {column.label}
+                                        </TableCell> :
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align}
+                                            onClick={() => sortingHandler(column.id)}
+                                            sx={{minWidth: column.minWidth}}
+                                        >
+                                            {column.label}
+                                            <ArrowDropDownIcon style={{margin: "-6px 2px"}}/>
+                                        </TableCell>
                                 ))}
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {!NoData && userData.map((row) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id} className={myStyle.tableRow}>
                                         {columns.map((column) => {
                                             let value;
                                             if (column.id === "sales_value") {
@@ -124,13 +131,19 @@ const Inventory = () => {
                                                 value = row[column.id];
                                             }
                                             return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    {value}
-                                                    {column.id === "action" && <div className={myStyle.icons}>
-                                                        <VisibilityIcon/>
-                                                        <PictureAsPdfSharpIcon/>
-                                                    </div>}
-                                                </TableCell>
+                                                column.id === "action" ?
+                                                    <TableCell key={column.id} align={column.align}
+                                                               sx={style}
+                                                    >
+                                                        <div className={myStyle.icons}>
+                                                            <VisibilityIcon/>
+                                                            <PictureAsPdfSharpIcon/>
+                                                        </div>
+                                                    </TableCell> :
+                                                    <TableCell key={column.id} align={column.align}
+                                                    >
+                                                        {value}
+                                                    </TableCell>
                                             );
                                         })}
                                     </TableRow>

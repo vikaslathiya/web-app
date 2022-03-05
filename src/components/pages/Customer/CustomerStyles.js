@@ -31,16 +31,35 @@ export const useStyles = makeStyles(() => ({
             }
         },
     },
-    // inventory page styles
-    searchBar: {
-        "&": {
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            margin: "6px 18px",
+    tables: {
+        maxHeight: "345px",
+        "&::-webkit-scrollbar": {
+            width: "6px",
+            height: "6px"
         },
-        "& h4": {
-            margin: "10px",
+        "&::-webkit-scrollbar-thumb": {
+            borderRadius: "6px",
+            backgroundColor: "rgba(0,0,0,.1)"
+        },
+        "&::-webkit-scrollbar-track": {
+            boxShadow: "inset 0 0 6px rgb(0 0 0 / 0%)"
+        },
+        "& .MuiTable-root": {
+            overflowX: 'hidden',
+        }
+    },
+    tableRow: {
+        "& .MuiTableCell-root": {
+            color: "white",
+            background: "#9A1752",
+            fontWeight: "bold",
+            padding: "10px",
+            cursor: "move",
+        }
+    },
+    tableBody: {
+        "& .MuiTableCell-root": {
+            background: "white",
         }
     }
 }));

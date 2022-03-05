@@ -3,17 +3,18 @@ import {userDataAction} from "../../store/userDataReducer";
 
 const webToken = localStorage.getItem("authToken");
 
-export const FetchAllCustomers = () => {
+export const FetchAllCustomers = (page, rowPerPage, search) => {
     const user = JSON.parse(localStorage.getItem("user"));
     const rootInfo = user.data.rooInfo;
 
     return async (dispatch) => {
-        await axios.get(`https://d.jeweltrace.in/customer/new?page_no=0&limit=10&rootInfo=company&id=${rootInfo.companyId}&search=`, {
+        await axios.get(`https://d.jeweltrace.in/customer/new?page_no=${page}&limit=${rowPerPage}&rootInfo=company&id=${rootInfo.companyId}&search=${search}`, {
             headers: {
                 "x-web-token": webToken,
             }
         }).then(res => {
-            dispatch(userDataAction.allCustomers({userData: res.data.data_array}))
+            console.log(res)
+            dispatch(userDataAction.allCustomers({users: res.data.data_array, userData: res.data.data}))
         })
     }
 }

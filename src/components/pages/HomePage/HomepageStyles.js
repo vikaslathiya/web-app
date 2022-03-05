@@ -1,5 +1,5 @@
-import { styled } from '@mui/material/styles';
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import {styled} from '@mui/material/styles';
+import {makeStyles, withStyles} from "@material-ui/core/styles";
 import MuiListItem from "@material-ui/core/ListItem";
 import MuiDrawer from '@mui/material/Drawer';
 
@@ -29,17 +29,13 @@ export const useStyles = makeStyles((theme) => ({
             fontWeight: "bold",
             marginLeft: "20px"
         },
-        "& .MuiToolbar-root p": {
+        "& .MuiToolbar-root .MuiList-root .MuiButton-root": {
             fontSize: "15px",
-            marginRight: "2px",
-            color: "black"
-        },
-        "& .MuiToolbar-root .MuiSvgIcon-root": {
+            textTransform: "capitalize",
             color: "black",
-            cursor: "pointer",
-        },
-        "& .MuiToolbar-root .MuiSvgIcon-root:hover": {
-            marginTop: "3px",
+            "&:hover": {
+                backgroundColor: "white",
+            }
         },
     },
     btn: {
@@ -60,20 +56,20 @@ export const useStyles = makeStyles((theme) => ({
         "&": {
             position: "absolute",
             top: "70px",
-            right: "20px",
+            right: "6px",
             display: "grid",
+            zIndex: 5,
+            transformOrigin: "138.458px 0px",
+            boxShadow: "0px 5px 5px -3px rgb(0 0 0 / 20%), 0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%) !important"
 
         },
-        "& button": {
-            backgroundColor: "white",
-            color: "black",
-            zIndex: 3,
-            marginBottom: "1px",
+        "& .MuiList-root .MuiListItemButton-root": {
+            padding: "10px 35px",
         },
-        "& button:hover": {
+        "& .MuiList-root .MuiListItemButton-root:hover": {
             backgroundColor: "#e9e9e9",
             color: "black",
-        },
+        }
     },
     hideMenu: {
         "&": {
@@ -111,8 +107,8 @@ export const closedMixin = (theme) => ({
     },
 });
 
-export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
+export const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
+    ({theme, open}) => ({
         width: "253px",
         flexShrink: 0,
         whiteSpace: 'nowrap',

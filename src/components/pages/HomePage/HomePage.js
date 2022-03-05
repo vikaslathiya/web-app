@@ -8,14 +8,13 @@ import AppPages from './AppPages';
 import DashboardPage from '../Dashboard/DashboardPage';
 
 import {
-    AppBar, Box, Button, Toolbar, Typography, CssBaseline,
+    AppBar, Box, Button, Toolbar, Typography, CssBaseline, ListItemButton
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import PeopleIcon from '@mui/icons-material/People';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
@@ -26,6 +25,8 @@ import {useHistory, useRouteMatch} from 'react-router-dom';
 
 import {useStyles, Drawer, ListItem} from './HomepageStyles';
 import {logoutApp} from "./HomepageData";
+import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import Paper from "@mui/material/Paper";
 
 const HomePage = () => {
     const [open, setOpen] = useState(false);
@@ -74,7 +75,7 @@ const HomePage = () => {
     };
 
     // toggle drop-menu
-    const toggleManu = !toggleMenu ? myStyle.hideMenu : myStyle.dropdown;
+    const toggleDropDown = !toggleMenu ? myStyle.hideMenu : myStyle.dropdown;
 
     let userData = JSON.parse(localStorage.getItem("user"));
 
@@ -89,23 +90,32 @@ const HomePage = () => {
                                 <Typography variant="h6" component="div">
                                     {title ? title : "Dashboard"}
                                 </Typography>
-                                <p>{userData.data.firstname} {userData.data.lastname}</p>
-                                <KeyboardArrowDownIcon onClick={toggleMenuHandler}/>
+                                <List
+                                    sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}
+                                    component="nav"
+                                    aria-labelledby="nested-list-subheader">
+                                    <Button onClick={toggleMenuHandler}>
+                                        <ListItemText primary={`${userData.data.firstname} ${userData.data.lastname}`}/>
+                                        {toggleMenu ? <ExpandLess/> : <ExpandMore/>}
+                                    </Button>
+                                </List>
+
                             </Toolbar>
                         </AppBar>
                     </Grid>
                 </Grid>
             </Box>
 
-
-            {toggleManu && <div className={toggleManu}>
-                <Button variant="contained" color='primary'>
-                    Profile
-                </Button>
-                <Button onClick={logoutHandler} variant="contained">
-                    Logout
-                </Button>
-            </div>}
+            {toggleMenu && <Paper component="div" className={toggleDropDown}>
+                <List component="div" disablePadding>
+                    <ListItemButton sx={{pl: 4}}>
+                        <ListItemText primary="Profile"/>
+                    </ListItemButton>
+                    <ListItemButton sx={{pl: 4}} onClick={logoutHandler}>
+                        <ListItemText primary="Logout"/>
+                    </ListItemButton>
+                </List>
+            </Paper>}
 
             <div>
                 <Box sx={{display: 'flex'}}>

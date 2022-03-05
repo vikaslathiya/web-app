@@ -7,6 +7,7 @@ import Customers from "../Customer/Customers";
 import Reports from "../Reports/Reports";
 import DashboardPage from '../Dashboard/DashboardPage';
 import AddCustomer from "../Customer/AddCustomer";
+import MyDemo from "../Mydemo";
 
 const AppPages = (props) => {
     const param = useParams();
@@ -30,7 +31,8 @@ const AppPages = (props) => {
         case "customers":
             return (
                 <Switch>
-                    <Route exact path={match.path}><Customers/></Route>
+                    {/*<Route exact path={match.path}><Customers/></Route>*/}
+                    <Route exact path={match.path}><MyDemo/></Route>
                     <Route path={`${match.path}/add-customer`}><AddCustomer/></Route>
                 </Switch>
             );
