@@ -1,10 +1,10 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
-import {Search, SearchIconWrapper, StyledInputBase} from "../Customer/CustomerStyles";
-import {useStyles} from "./InventoryStyle";
-import {columnsArray, getInventory} from "./GetInventory";
-import InventoryTable from "./InventoryTable";
+import {Search, SearchIconWrapper, StyledInputBase} from "../../Assets/Styles/CustomerStyles";
+import {useStyles} from "../../Assets/Styles/InventoryStyle";
+import {columnsArray, getInventory} from "../../Middleware/GetInventory";
+import InventoryTable from "../../components/Tables/InventoryTable";
 
 import SearchIcon from "@mui/icons-material/Search";
 import {Box, Paper} from "@mui/material";

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {DashboardAction} from "../../store/DashboardData";
+import {DashboardAction} from "../store/Reducers/DashboardData";
 
 const webToken = localStorage.getItem("authToken");
 

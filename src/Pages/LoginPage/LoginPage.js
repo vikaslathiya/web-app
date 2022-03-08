@@ -1,7 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
 
-import logo from "../../../img/logo.jpeg"
-import {loginAction} from "../../store/loginReducer";
+import logo from "../../Assets/Images/logo.jpeg"
 
 import {
     Box, Button, Checkbox, Container, FormControl,
@@ -17,8 +16,8 @@ import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
 
-import {useStyle} from "./LoginStyles";
-import {loginApp} from "./loginData";
+import {useStyle} from "../../Assets/Styles/LoginStyles";
+import {loginApp} from "../../Middleware/loginData";
 
 
 const LoginPage = () => {
@@ -32,14 +31,6 @@ const LoginPage = () => {
         password: '',
         showPassword: false,
     });
-
-    // stay logged user
-    useEffect(() => {
-        const loggedIn = localStorage.getItem("authToken");
-        if (loggedIn) {
-            dispatch(loginAction.login({isLogin: true, token: loggedIn}));
-        }
-    }, [dispatch]);
 
     useEffect(() => {
         const getPath = localStorage.getItem("currentPath")
@@ -73,7 +64,7 @@ const LoginPage = () => {
 
         if (validPassword) {
             await dispatch(loginApp(values.email, values.password));
-            history.push("/home-page");
+            history.replace("/home-page");
         } else {
             alert("enter valid details!")
         }
@@ -84,7 +75,6 @@ const LoginPage = () => {
         <Fragment>
             <Container maxWidth="sm">
                 <div className={myStyle.container}>
-
                     <div className={myStyle.logo}>
                         <img src={logo} alt="logo"/>
                     </div>

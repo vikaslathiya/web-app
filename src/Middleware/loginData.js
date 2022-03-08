@@ -1,9 +1,8 @@
 import axios from "axios";
-import {loginAction} from "../../store/loginReducer";
+import {loginAction} from "../store/Reducers/loginReducer";
 
 
 export const loginApp = (userName, password) => {
-    console.log("login")
     return async (dispatch) => {
         const response = await axios.post("https://d.jeweltrace.in/login/", {
                 "username": userName,
@@ -18,9 +17,8 @@ export const loginApp = (userName, password) => {
         if (data.status) {
             localStorage.setItem("user", JSON.stringify(data));
             dispatch(loginAction.login({
-                token: data.data.web_token[0],
+                token: data.data.web_token[0], isLogin: true
             }));
-            // history.push("/home-page");
         } else {
             alert(data.errors.msg);
         }

@@ -10,7 +10,7 @@ import TableBody from "@mui/material/TableBody";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PictureAsPdfSharpIcon from "@mui/icons-material/PictureAsPdfSharp";
 import {TablePagination} from "@material-ui/core";
-import {useStyles} from "./InventoryStyle";
+import {useStyles} from "../../Assets/Styles/InventoryStyle";
 import {useSelector} from "react-redux";
 
 const InventoryTable = (props) => {

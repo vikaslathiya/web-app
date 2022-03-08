@@ -1,5 +1,5 @@
 import axios from "axios";
-import {userDataAction} from "../../store/userDataReducer";
+import {userDataAction} from "../store/Reducers/userDataReducer";
 
 const webToken = localStorage.getItem("authToken");
 
@@ -9,8 +9,8 @@ export const columnsArray = [
     {id: 'contactNumber', label: 'TEL', align: 'center', minWidth: 100},
     {id: 'email', label: 'EMAIL', minWidth: 150, align: 'center'},
     {id: 'companyName', label: 'COMPANY', minWidth: 100, align: 'center'},
-    {id: 'itemTotal', label: 'TOTAL NO. PURCHASES', minWidth: 125, align: 'center'},
-    {id: 'priceTotal', label: 'TOTAL PURCHASES VALUE', minWidth: 172, align: 'center'},
+    {id: 'itemTotal', label: 'TOTAL NO. PURCHASES', minWidth: 215, align: 'center'},
+    {id: 'priceTotal', label: 'TOTAL PURCHASES VALUE', minWidth: 215, align: 'center'},
     {id: 'action', label: 'ACTION', minWidth: 120, align: 'center'},
 ];
 

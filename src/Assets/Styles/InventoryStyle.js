@@ -6,7 +6,6 @@ export const useStyles = makeStyles(() => ({
         paddingTop: "12px",
         background: "#fbfbfb",
         borderRadius: "10px",
-        boxShadow: "0 0 2px black",
     },
     tables: {
         "&::-webkit-scrollbar": {

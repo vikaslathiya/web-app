@@ -8,7 +8,7 @@ import {
     ValueAxis, Tooltip,
 } from '@devexpress/dx-react-chart-material-ui';
 import {Animation, EventTracker} from '@devexpress/dx-react-chart';
-import {barChartData} from "./getChartData";
+import {barChartData} from "../../Middleware/getChartData";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "@mui/material";
 

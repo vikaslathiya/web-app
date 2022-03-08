@@ -1,5 +1,5 @@
 import axios from "axios";
-import {InventoryAction} from "../../store/InventoryData";
+import {InventoryAction} from "../store/Reducers/InventoryData";
 
 // create columns for table
 export const columnsArray = [

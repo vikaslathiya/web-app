@@ -9,9 +9,6 @@ export const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper
     },
     appbar: {
-        "&": {
-            // margin: "5px 10px",
-        },
         "& .MuiAppBar-positionSticky": {
             position: "sticky",
         },
@@ -39,9 +36,7 @@ export const useStyles = makeStyles((theme) => ({
         },
     },
     btn: {
-        "&": {
-            backgroundColor: "#9A1752",
-        },
+        backgroundColor: "#9A1752",
     },
     list: {
         "& a": {
@@ -53,16 +48,14 @@ export const useStyles = makeStyles((theme) => ({
         }
     },
     dropdown: {
-        "&": {
-            position: "absolute",
-            top: "70px",
-            right: "6px",
-            display: "grid",
-            zIndex: 5,
-            transformOrigin: "138.458px 0px",
-            boxShadow: "0px 5px 5px -3px rgb(0 0 0 / 20%), 0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%) !important"
+        position: "absolute",
+        top: "70px",
+        right: "6px",
+        display: "grid",
+        zIndex: 5,
+        transformOrigin: "138.458px 0px",
+        boxShadow: "0px 5px 5px -3px rgb(0 0 0 / 20%), 0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%) !important",
 
-        },
         "& .MuiList-root .MuiListItemButton-root": {
             padding: "10px 35px",
         },
@@ -72,9 +65,7 @@ export const useStyles = makeStyles((theme) => ({
         }
     },
     hideMenu: {
-        "&": {
-            display: "none",
-        },
+        display: "none",
     }
 }));
 
@@ -82,7 +73,6 @@ export const useStyles = makeStyles((theme) => ({
 export const openedMixin = (theme) => ({
     width: "253px",
     marginTop: "64px",
-    // marginLeft: "10px",
     backgroundColor: "#9a1752",
 
     transition: theme.transitions.create('width', {
@@ -94,7 +84,6 @@ export const openedMixin = (theme) => ({
 
 export const closedMixin = (theme) => ({
     marginTop: "64px",
-    // marginLeft: "10px",
     backgroundColor: "#9a1752",
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
@@ -128,7 +117,7 @@ export const ListItem = withStyles({
     root: {
         "&$selected": {
             backgroundColor: "#f8d3e4",
-            "& .MuiListItemIcon-root": {
+            "& .MuiListItemIcon-root, & .MuiListItemText-root .MuiTypography-root": {
                 color: "#9a1752"
             },
         },

@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react'
+import React, {Fragment, useEffect, useRef, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory, useRouteMatch} from 'react-router-dom';
 
@@ -8,10 +8,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import {Button} from '@material-ui/core';
 import CloseIcon from "@mui/icons-material/Close";
 
-import {Search, SearchIconWrapper, StyledInputBase, useStyles} from './CustomerStyles';
-import {userDataAction} from "../../store/userDataReducer";
-import {columnsArray, FetchAllCustomers} from "./EditData";
-import CustomersTable from "./CustomersTable";
+import {Search, SearchIconWrapper, StyledInputBase, useStyles} from '../../Assets/Styles/CustomerStyles';
+import {userDataAction} from "../../store/Reducers/userDataReducer";
+import {columnsArray, FetchAllCustomers} from "../../Middleware/CustomerApiCall";
+import CustomersTable from "../../components/Tables/CustomersTable";
 
 const Customers = () => {
     const totalCustomer = useSelector(state => state.getCustomers.userData);
@@ -22,6 +22,8 @@ const Customers = () => {
     const match = useRouteMatch();
     const history = useHistory();
     const dispatch = useDispatch();
+    const dragItem = useRef();
+    const dragOverItem = useRef();
 
     useEffect(() => {
         dispatch(FetchAllCustomers(page, rowsPerPage, search))
@@ -58,6 +60,7 @@ const Customers = () => {
     const myStyle = useStyles();
 
     const onDragEndHandler = (result) => {
+        console.log(result)
         const {destination, source} = result;
 
         // Not a thing to do...
@@ -80,6 +83,20 @@ const Customers = () => {
         setColumns(active);
         dispatch(FetchAllCustomers(page, rowsPerPage, search))
     }
+
+    const onDragStartHandler = (result) => {
+        console.log(result)
+    }
+
+    const drop = () => {
+        const copyListItems = [...columns];
+        const dragItemContent = copyListItems[dragItem.current];
+        copyListItems.splice(dragItem.current, 1);
+        copyListItems.splice(dragOverItem.current, 0, dragItemContent);
+        dragItem.current = null;
+        dragOverItem.current = null;
+        setColumns(copyListItems);
+    };
 
     return (<Fragment>
         <Box className={myStyle.mainBox}>
@@ -107,6 +124,10 @@ const Customers = () => {
 
             <Paper sx={{width: '99.5%'}}>
                 <CustomersTable
+                    dragItem={dragItem}
+                    dragOverItem={dragOverItem}
+                    drop={drop}
+                    onDragStart={onDragStartHandler}
                     onDragEnd={onDragEndHandler}
                     columns={columns}
                     page={page}

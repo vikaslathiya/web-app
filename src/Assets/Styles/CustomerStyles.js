@@ -9,7 +9,6 @@ export const useStyles = makeStyles(() => ({
         paddingTop: "12px",
         background: "#fbfbfb",
         borderRadius: "10px",
-        boxShadow: "0 0 2px black",
     },
     icons: {
         "& .MuiSvgIcon-root": {
@@ -56,14 +55,19 @@ export const useStyles = makeStyles(() => ({
         }
     },
     tableRow: {
+        background: "#9A1752",
+        position: "sticky",
+        top: 0,
+        whiteSpace: "nowrap",
+        height: "5px",
+        zIndex: 10,
         "& .MuiTableCell-root": {
-            color: "white",
-            background: "#9A1752",
-            fontWeight: "bold",
+            // color: "white",
+            background: "transparent",
+            // fontWeight: 500,
             padding: "4px 20px",
             paddingLeft: 0,
-            cursor: "move",
-            minWidth: "110px",
+            // cursor: "move",
             zIndex: 2,
         }
     },
