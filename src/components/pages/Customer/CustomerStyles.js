@@ -4,6 +4,13 @@ import InputBase from '@mui/material/InputBase';
 
 // customer page mui styles
 export const useStyles = makeStyles(() => ({
+    mainBox: {
+        padding: "35px 10px",
+        paddingTop: "12px",
+        background: "#fbfbfb",
+        borderRadius: "10px",
+        boxShadow: "0 0 2px black",
+    },
     icons: {
         "& .MuiSvgIcon-root": {
             fontSize: "18px",
@@ -53,15 +60,45 @@ export const useStyles = makeStyles(() => ({
             color: "white",
             background: "#9A1752",
             fontWeight: "bold",
-            padding: "10px",
+            padding: "4px 20px",
+            paddingLeft: 0,
             cursor: "move",
+            minWidth: "110px",
+            zIndex: 2,
         }
     },
+    // dragTableRow: {
+    //     background: "#9A1752",
+    //     "& .MuiTableCell-root": {
+    //         color: "white",
+    //         background: "transparent",
+    //         fontWeight: "bold",
+    //         padding: "4px 20px 4px 0px",
+    //         borderBottomColor: "transparent",
+    //         minWidth: "130px"
+    //     }
+    // },
     tableBody: {
         "& .MuiTableCell-root": {
             background: "white",
         }
+    },
+    searchBar: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        margin: "6px 18px",
+        marginLeft: 0,
+    },
+    pagination: {
+        "& .MuiToolbar-root p:nth-last-child(2)": {
+            marginLeft: "auto"
+        },
+        "& .MuiToolbar-root .MuiTablePagination-spacer": {
+            display: "none"
+        }
     }
+
 }));
 
 
@@ -79,12 +116,13 @@ export const Search = styled('div')(({theme}) => ({
 export const SearchIconWrapper = styled('div')(({theme}) => ({
     padding: theme.spacing(0, 2),
     position: 'absolute',
-    left: "200px",
+    right: 0,
     top: "8px",
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    cursor: "pointer"
+    cursor: "pointer",
+    margin: "0px 5px"
 }));
 
 export const StyledInputBase = styled(InputBase)(({theme}) => ({

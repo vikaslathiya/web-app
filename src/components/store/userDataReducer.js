@@ -31,6 +31,9 @@ const userData = createSlice({
         closeEditCustomer(state) {
             state.editMode = false;
             state.editable = null;
+        },
+        loadingState(state, action){
+            state.isLoading = action.payload.loading;
         }
     }
 });

@@ -1,22 +1,14 @@
-import React, {Fragment, useEffect, useState} from 'react'
-import {Box} from "@mui/material";
+import React, {Fragment, useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+
 import {Search, SearchIconWrapper, StyledInputBase} from "../Customer/CustomerStyles";
 import {useStyles} from "./InventoryStyle";
-import SearchIcon from "@mui/icons-material/Search";
-import {TablePagination} from "@material-ui/core";
-import Paper from "@mui/material/Paper";
-import TableContainer from "@mui/material/TableContainer";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import PictureAsPdfSharpIcon from '@mui/icons-material/PictureAsPdfSharp';
-import {getInventory} from "./GetInventory";
-import {useDispatch, useSelector} from "react-redux";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import {columnsArray, getInventory} from "./GetInventory";
+import InventoryTable from "./InventoryTable";
 
+import SearchIcon from "@mui/icons-material/Search";
+import {Box, Paper} from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 const Inventory = () => {
     const dispatch = useDispatch();
@@ -25,28 +17,22 @@ const Inventory = () => {
     const [sorting, setSorting] = useState("");
     const [search, setSearch] = useState("");
     const user = useSelector(state => state.getInventory.user)
-    const userData = useSelector(state => state.getInventory.userData)
+    const [columns, setColumns] = useState(columnsArray);
 
     // mui styles
     const myStyle = useStyles();
 
-    // create columns for table
-    const columns = [
-        {id: 'sku_number', label: 'SKU', align: 'center', minWidth: 75},
-        {id: 'design_code', label: 'Design Code', align: 'center', minWidth: 137},
-        {id: 'metal_type', label: 'Material', minWidth: 104, align: 'center'},
-        {id: 'design_category', label: 'Design Category', minWidth: 162, align: 'center'},
-        {id: 'diamond_weight', label: 'Diamond Ct.', minWidth: 134, align: 'center'},
-        {id: 'net_weight', label: 'Net Weight', minWidth: 124, align: 'center'},
-        {id: 'sales_value', label: 'Price', minWidth: 84, align: 'center'},
-        {id: 'sku_quantity', label: 'SKU Qty', minWidth: 106, align: 'center'},
-        {id: 'createdAt', label: 'Date', minWidth: 106, align: 'center'},
-        {id: 'action', label: 'Action', minWidth: 100, align: 'center'},
-    ];
-
     useEffect(() => {
         dispatch(getInventory(page, rowsPerPage, sorting, search));
     }, [dispatch, page, rowsPerPage, sorting, search]);
+
+    const totals = {
+        totalsku: user.totalSku,
+        totalPcs: user.totalPcs
+    }
+    if (search === "") {
+        localStorage.setItem("totals", JSON.stringify(totals))
+    }
 
     // change pages
     const handleChangePage = (event, newPage) => {
@@ -64,105 +50,70 @@ const Inventory = () => {
         setSearch(e.target.value.toUpperCase());
     };
 
-    const NoData = userData.length === 0;
-
     const sortingHandler = (column) => {
         setSorting(column);
     }
 
-    const style = {
-        right: 0,
-        position: "sticky",
-        minWidth: "100px"
+    const onDragEndHandler = (result) => {
+        const {destination, source} = result;
+
+        // Not a thing to do...
+        if (!destination) return;
+
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return;
+        }
+
+        let add, active = columns;
+        if (source.droppableId === "droppable") {
+            add = active[source.index];
+            active.splice(source.index, 1);
+        }
+
+        if (destination.droppableId === "droppable") {
+            active.splice(destination.index, 0, add);
+        }
+
+        setColumns(active);
+        dispatch(getInventory(page, rowsPerPage, sorting, search));
     }
+
+    let totalItems = JSON.parse(localStorage.getItem("totals"))
 
     return (
         <Fragment>
-            <Box className={myStyle.searchBar}>
-                <Search>
-                    <StyledInputBase placeholder="Search here…"
-                                     onChange={searchChangeHandler}
-                                     inputProps={{'aria-label': 'search'}}/>
-                    <SearchIconWrapper>
-                        <SearchIcon/>
-                    </SearchIconWrapper>
-                </Search>
-                <h4>Total Stones: {user.totalSku}</h4>
-                <h4>Total Carats: {user.totalPcs}</h4>
+            <Box className={myStyle.mainBox}>
+                <Box className={myStyle.searchBar}>
+                    <Search>
+                        <StyledInputBase placeholder="Search here…"
+                                         value={search}
+                                         onChange={searchChangeHandler}
+                                         inputProps={{'aria-label': 'search'}}/>
+                        <SearchIconWrapper>
+                            {search !== "" && <CloseIcon onClick={() => setSearch("")}/>}
+                            <SearchIcon/>
+                        </SearchIconWrapper>
+                    </Search>
+                </Box>
+                <Box className={myStyle.searchBar}>
+                    <h4>Total Stones: {totalItems.totalsku} {search !== "" && <span>({user.totalSku})</span>}</h4>
+                    <h4>Total Carats: {totalItems.totalPcs} {search !== "" && <span>({user.totalPcs})</span>}</h4>
+                </Box>
+                <Paper sx={{width: '100%'}}>
+                    <InventoryTable
+                        onDragEnd={onDragEndHandler}
+                        columns={columns}
+                        sorting={sortingHandler}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        changePage={handleChangePage}
+                        changeRowsPerPage={handleChangeRowsPerPage}
+                    />
+                </Paper>
             </Box>
-            <Paper sx={{width: '100%'}}>
-                <TableContainer sx={{maxHeight: "383px"}} className={myStyle.tables}>
-                    <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow className={myStyle.tableCell}>
-                                {columns.map((column) => (
-                                    column.id === "action" ?
-                                        <TableCell
-                                            key={column.id}
-                                            align={column.align}
-                                            onClick={() => sortingHandler(column.id)}
-                                            sx={style}
-                                        >
-                                            {column.label}
-                                        </TableCell> :
-                                        <TableCell
-                                            key={column.id}
-                                            align={column.align}
-                                            onClick={() => sortingHandler(column.id)}
-                                            sx={{minWidth: column.minWidth}}
-                                        >
-                                            {column.label}
-                                            <ArrowDropDownIcon style={{margin: "-6px 2px"}}/>
-                                        </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {!NoData && userData.map((row) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id} className={myStyle.tableRow}>
-                                        {columns.map((column) => {
-                                            let value;
-                                            if (column.id === "sales_value") {
-                                                value = `₹ ${row[column.id]}`;
-                                            } else if (column.id === "createdAt") {
-                                                value = row[column.id].slice(0, 10);
-                                            } else {
-                                                value = row[column.id];
-                                            }
-                                            return (
-                                                column.id === "action" ?
-                                                    <TableCell key={column.id} align={column.align}
-                                                               sx={style}
-                                                    >
-                                                        <div className={myStyle.icons}>
-                                                            <VisibilityIcon/>
-                                                            <PictureAsPdfSharpIcon/>
-                                                        </div>
-                                                    </TableCell> :
-                                                    <TableCell key={column.id} align={column.align}
-                                                    >
-                                                        {value}
-                                                    </TableCell>
-                                            );
-                                        })}
-                                    </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                    {NoData && <h4 style={{textAlign: "center"}}>No Inventory Found!</h4>}
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25, 100]}
-                    component="div"
-                    count={user.totalPage === undefined ? 0 : user.totalPage}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Paper>
         </Fragment>
     );
 }

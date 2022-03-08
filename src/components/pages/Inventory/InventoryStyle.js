@@ -1,6 +1,13 @@
 import {makeStyles} from "@material-ui/core/styles";
 
 export const useStyles = makeStyles(() => ({
+    mainBox: {
+        padding: "35px 10px",
+        paddingTop: "12px",
+        background: "#fbfbfb",
+        borderRadius: "10px",
+        boxShadow: "0 0 2px black",
+    },
     tables: {
         "&::-webkit-scrollbar": {
             width: "6px",
@@ -15,15 +22,14 @@ export const useStyles = makeStyles(() => ({
         },
     },
     searchBar: {
-        "&": {
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            margin: "6px 18px",
-        },
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        margin: "6px 18px",
+        marginLeft: 0,
         "& h4": {
             margin: "10px",
-        }
+        },
     },
     icons: {
         "& .MuiSvgIcon-root": {
@@ -37,14 +43,36 @@ export const useStyles = makeStyles(() => ({
             color: "white",
             background: "#9A1752",
             fontWeight: "bold",
-            padding: "10px 0px",
-            cursor: "pointer",
+            padding: "18px 2px",
+            cursor: "move",
             top: 0,
+            fontSize: "12px"
+        }
+    },
+    dragTableCell: {
+        "&": {
+            background: "#9A1752",
+        },
+        "& .MuiTableCell-root": {
+            color: "white",
+            background: "transparent",
+            fontWeight: "bold",
+            padding: "18px 2px",
+            borderBottomColor: "transparent",
+            fontSize: "12px"
         }
     },
     tableRow: {
         "& .MuiTableCell-root": {
             background: "white",
+        }
+    },
+    pagination: {
+        "& .MuiToolbar-root p:nth-last-child(2)": {
+            marginLeft: "auto"
+        },
+        "& .MuiToolbar-root .MuiTablePagination-spacer": {
+            display: "none"
         }
     }
 }))

@@ -6,12 +6,13 @@ export const loginApp = (userName, password) => {
     console.log("login")
     return async (dispatch) => {
         const response = await axios.post("https://d.jeweltrace.in/login/", {
-            "username": userName,
-            "password": password,
-            "type": "web"
-        }, {
-            "Content-Type": "application/json",
-        });
+                "username": userName,
+                "password": password,
+                "type": "web"
+            },
+            {
+                "Content-Type": "application/json",
+            });
         const data = await response.data;
 
         if (data.status) {
