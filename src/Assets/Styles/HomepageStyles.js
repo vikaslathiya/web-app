@@ -66,6 +66,12 @@ export const useStyles = makeStyles((theme) => ({
     },
     hideMenu: {
         display: "none",
+    },
+    content:{
+        flexGrow: 1,
+        marginTop: "75px",
+        overflowX: "auto",
+        padding: "10px 20px",
     }
 }));
 
@@ -115,6 +121,9 @@ export const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== '
 
 export const ListItem = withStyles({
     root: {
+        width: "94%",
+        margin: "8px auto",
+        borderRadius: "6px",
         "&$selected": {
             backgroundColor: "#f8d3e4",
             "& .MuiListItemIcon-root, & .MuiListItemText-root .MuiTypography-root": {
@@ -136,7 +145,7 @@ export const ListItem = withStyles({
         "&": {
             "& .MuiListItemIcon-root": {
                 color: "white",
-                padding: "0 9px",
+                padding: "0 6px",
             },
         }
     },

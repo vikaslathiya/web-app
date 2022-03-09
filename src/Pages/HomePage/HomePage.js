@@ -14,7 +14,7 @@ import Paper from "@mui/material/Paper";
 import {Route, Switch, useLocation} from 'react-router-dom';
 import {useHistory, useRouteMatch} from 'react-router-dom';
 
-import HomepageDrawer from "../../components/Drawer/Drawer";
+import HomepageDrawer from "../../components/Drawer";
 import {useStyles} from '../../Assets/Styles/HomepageStyles';
 import {logoutApp} from "../../Middleware/HomepageData";
 import NavAppbar from "../../Layouts/Header/NavAppbar";
@@ -99,8 +99,7 @@ const HomePage = () => {
                     selectedIndex={selectedIndex}
                 />
 
-                <Box component="main"
-                     sx={{flexGrow: 1, p: 1, mt: "75px", overflowX: "auto"}}>
+                <Box component="main" className={myStyle.content}>
 
                     <Switch>
                         <Route exact path={`${path}`}><DashboardPage/></Route>

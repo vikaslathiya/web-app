@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useRef, useState} from 'react'
+import React, {Fragment, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory, useRouteMatch} from 'react-router-dom';
 
@@ -9,21 +9,25 @@ import {Button} from '@material-ui/core';
 import CloseIcon from "@mui/icons-material/Close";
 
 import {Search, SearchIconWrapper, StyledInputBase, useStyles} from '../../Assets/Styles/CustomerStyles';
-import {userDataAction} from "../../store/Reducers/userDataReducer";
 import {columnsArray, FetchAllCustomers} from "../../Middleware/CustomerApiCall";
-import CustomersTable from "../../components/Tables/CustomersTable";
+import Tables from "../../components/Tables";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+// import {userDataAction} from "../../store/Reducers/userDataReducer";
 
 const Customers = () => {
     const totalCustomer = useSelector(state => state.getCustomers.userData);
+    const rows = useSelector(state => state.getCustomers.users);
+    const isLoading = useSelector(state => state.getCustomers.isLoading);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [columns, setColumns] = useState(columnsArray);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
     const match = useRouteMatch();
     const history = useHistory();
     const dispatch = useDispatch();
-    const dragItem = useRef();
-    const dragOverItem = useRef();
+    const totalPages = totalCustomer.totalRecord ? totalCustomer.totalRecord : totalCustomer.totalCustomer;
+    const columns = columnsArray;
 
     useEffect(() => {
         dispatch(FetchAllCustomers(page, rowsPerPage, search))
@@ -46,99 +50,64 @@ const Customers = () => {
         setSearch(e.target.value);
     };
 
-
     const addCustomerHandler = () => {
         history.push(`${match.url}/add-customer`)
     };
 
     const editCustomerHandler = (row) => {
-        dispatch(userDataAction.editCustomer({edit: row}));
-        history.push(`${match.url}/add-customer`)
+        console.log(row.target)
+        // dispatch(userDataAction.editCustomer({edit: row}));
+        // history.push(`${match.url}/add-customer`)
     }
 
 // mui styles
     const myStyle = useStyles();
 
-    const onDragEndHandler = (result) => {
-        console.log(result)
-        const {destination, source} = result;
 
-        // Not a thing to do...
-        if (!destination) return;
+    return (
+        <Fragment>
+            <Box className={myStyle.mainBox}>
+                <Box className={myStyle.searchBar}>
+                    <Search>
+                        <StyledInputBase
+                            value={search}
+                            placeholder="Search here…"
+                            onChange={searchChangeHandler}
+                            inputProps={{'aria-label': 'search'}}/>
+                        <SearchIconWrapper>
+                            {search !== "" && <CloseIcon onClick={() => setSearch("")}/>}
+                            <SearchIcon/>
+                        </SearchIconWrapper>
+                    </Search>
+                </Box>
+                <Box className={myStyle.tableTop}>
+                    <h4>Total Customers: {totalPages}</h4>
 
-        if (destination.droppableId === source.droppableId && destination.index === source.index) {
-            return;
-        }
+                    <Button variant="contained" onClick={addCustomerHandler}>
+                        Add Customers
+                    </Button>
+                </Box>
 
-        let add, active = columns;
-        if (source.droppableId === "droppable") {
-            add = active[source.index];
-            active.splice(source.index, 1);
-        }
-
-        if (destination.droppableId === "droppable") {
-            active.splice(destination.index, 0, add);
-        }
-
-        setColumns(active);
-        dispatch(FetchAllCustomers(page, rowsPerPage, search))
-    }
-
-    const onDragStartHandler = (result) => {
-        console.log(result)
-    }
-
-    const drop = () => {
-        const copyListItems = [...columns];
-        const dragItemContent = copyListItems[dragItem.current];
-        copyListItems.splice(dragItem.current, 1);
-        copyListItems.splice(dragOverItem.current, 0, dragItemContent);
-        dragItem.current = null;
-        dragOverItem.current = null;
-        setColumns(copyListItems);
-    };
-
-    return (<Fragment>
-        <Box className={myStyle.mainBox}>
-            <Box className={myStyle.searchBar}>
-                <Search>
-                    <StyledInputBase
-                        value={search}
-                        placeholder="Search here…"
-                        onChange={searchChangeHandler}
-                        inputProps={{'aria-label': 'search'}}/>
-                    <SearchIconWrapper>
-                        {search !== "" && <CloseIcon onClick={() => setSearch("")}/>}
-                        <SearchIcon/>
-                    </SearchIconWrapper>
-                </Search>
+                <Paper sx={{width: '99.5%'}}>
+                    <Tables
+                        column={columns}
+                        rows={rows}
+                        isLoading={isLoading}
+                        page={page}
+                        pageCounts={totalPages}
+                        rowsPerPage={rowsPerPage}
+                        changePage={handleChangePage}
+                        chageRowsPerPage={handleChangeRowsPerPage}
+                        bodyIcons={[
+                            {id: "visible", icon: <VisibilityIcon/>},
+                            {id: "edit", icon: <EditIcon onClick={(row) => editCustomerHandler(row)}/>},
+                            {id: "delete", icon: <DeleteIcon/>},
+                        ]}
+                    />
+                </Paper>
             </Box>
-            <Box className={myStyle.tableTop}>
-                <h4>Total
-                    Customers: {totalCustomer.totalRecord ? totalCustomer.totalRecord : totalCustomer.totalCustomer}</h4>
-
-                <Button variant="contained" onClick={addCustomerHandler}>
-                    Add Customers
-                </Button>
-            </Box>
-
-            <Paper sx={{width: '99.5%'}}>
-                <CustomersTable
-                    dragItem={dragItem}
-                    dragOverItem={dragOverItem}
-                    drop={drop}
-                    onDragStart={onDragStartHandler}
-                    onDragEnd={onDragEndHandler}
-                    columns={columns}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    editCustomer={editCustomerHandler}
-                    changePage={handleChangePage}
-                    changeRowsPerPage={handleChangeRowsPerPage}
-                />
-            </Paper>
-        </Box>
-    </Fragment>);
+        </Fragment>
+    );
 }
 
 export default Customers;

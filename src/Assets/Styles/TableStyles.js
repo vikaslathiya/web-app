@@ -1,13 +1,8 @@
 import {makeStyles} from "@material-ui/core/styles";
 
-export const useStyles = makeStyles(() => ({
-    mainBox: {
-        padding: "35px 10px",
-        paddingTop: "12px",
-        borderRadius: "10px",
-        background: "white",
-    },
+export const TableStyles = makeStyles(() => ({
     tables: {
+        maxHeight: "345px",
         "&::-webkit-scrollbar": {
             width: "6px",
             height: "6px"
@@ -19,25 +14,11 @@ export const useStyles = makeStyles(() => ({
         "&::-webkit-scrollbar-track": {
             boxShadow: "inset 0 0 6px rgb(0 0 0 / 0%)"
         },
+        "& .MuiTable-root": {
+            overflowX: 'hidden',
+        }
     },
-    searchBar: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        margin: "6px 18px",
-        marginLeft: 0,
-        "& h4": {
-            margin: "10px",
-        },
-    },
-    icons: {
-        "& .MuiSvgIcon-root": {
-            fontSize: "18px",
-            margin: "0px 4px",
-            cursor: "pointer",
-        },
-    },
-    tableCell: {
+    tableRow: {
         background: "#9A1752",
         position: "sticky",
         top: 0,
@@ -47,15 +28,23 @@ export const useStyles = makeStyles(() => ({
         "& .MuiTableCell-root": {
             background: "transparent",
             padding: "4px 20px",
-            paddingLeft: 0,
             zIndex: 2,
-            color: "white",
         }
     },
-    tableRow: {
+    tableBody: {
         "& .MuiTableCell-root": {
             background: "white",
         }
+    },
+    icons: {
+        display: "flex",
+        justifyContent: "center",
+        "& .MuiSvgIcon-root": {
+            fontSize: "18px",
+            margin: "0px 4px",
+            cursor: "pointer",
+            color: "black",
+        },
     },
     pagination: {
         "& .MuiToolbar-root p:nth-last-child(2)": {
@@ -64,13 +53,5 @@ export const useStyles = makeStyles(() => ({
         "& .MuiToolbar-root .MuiTablePagination-spacer": {
             display: "none"
         }
-    },
-    dragItem: {
-        color: "white",
-        fontWeight: 500,
-        cursor: "move",
-        padding: "8px",
-        zIndex: 1000,
-        transitionDuration: "300ms",
     },
 }))

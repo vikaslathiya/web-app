@@ -2,11 +2,12 @@ import {makeStyles} from "@material-ui/core/styles";
 
 export const useStyles = makeStyles(() => ({
     container: {
+        padding: "18px 20px",
         "& h3": {
             marginTop: "0px",
         },
         "& form": {
-            margin: "10px 20px",
+            margin: "6px 15px",
         },
     },
     form: {

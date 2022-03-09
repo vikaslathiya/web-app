@@ -4,11 +4,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {Search, SearchIconWrapper, StyledInputBase} from "../../Assets/Styles/CustomerStyles";
 import {useStyles} from "../../Assets/Styles/InventoryStyle";
 import {columnsArray, getInventory} from "../../Middleware/GetInventory";
-import InventoryTable from "../../components/Tables/InventoryTable";
 
 import SearchIcon from "@mui/icons-material/Search";
 import {Box, Paper} from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
+import Tables from "../../components/Tables";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import PictureAsPdfSharpIcon from "@mui/icons-material/PictureAsPdfSharp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const Inventory = () => {
     const dispatch = useDispatch();
@@ -17,7 +20,9 @@ const Inventory = () => {
     const [sorting, setSorting] = useState("");
     const [search, setSearch] = useState("");
     const user = useSelector(state => state.getInventory.user)
-    const [columns, setColumns] = useState(columnsArray);
+    const rows = useSelector(state => state.getInventory.userData)
+    const isLoading = useSelector(state => state.getInventory.isLoading)
+    const columns = columnsArray;
 
     // mui styles
     const myStyle = useStyles();
@@ -54,33 +59,6 @@ const Inventory = () => {
         setSorting(column);
     }
 
-    const onDragEndHandler = (result) => {
-        const {destination, source} = result;
-
-        // Not a thing to do...
-        if (!destination) return;
-
-        if (
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        ) {
-            return;
-        }
-
-        let add, active = columns;
-        if (source.droppableId === "droppable") {
-            add = active[source.index];
-            active.splice(source.index, 1);
-        }
-
-        if (destination.droppableId === "droppable") {
-            active.splice(destination.index, 0, add);
-        }
-
-        setColumns(active);
-        dispatch(getInventory(page, rowsPerPage, sorting, search));
-    }
-
     let totalItems = JSON.parse(localStorage.getItem("totals"))
 
     return (
@@ -103,14 +81,21 @@ const Inventory = () => {
                     <h4>Total Carats: {totalItems.totalPcs} {search !== "" && <span>({user.totalPcs})</span>}</h4>
                 </Box>
                 <Paper sx={{width: '100%'}}>
-                    <InventoryTable
-                        onDragEnd={onDragEndHandler}
-                        columns={columns}
+                    <Tables
+                        column={columns}
+                        rows={rows}
+                        isLoading={isLoading}
                         sorting={sortingHandler}
                         page={page}
+                        pageCounts={user.totalPage === undefined ? 0 : user.totalPage}
                         rowsPerPage={rowsPerPage}
                         changePage={handleChangePage}
                         changeRowsPerPage={handleChangeRowsPerPage}
+                        bodyIcons={[
+                            {id: "visible", icon: <VisibilityIcon/>},
+                            {id: "pdf", icon: <PictureAsPdfSharpIcon/>}
+                        ]}
+                        headerIcons={<ArrowDropDownIcon style={{margin: "-6px 2px"}}/>}
                     />
                 </Paper>
             </Box>

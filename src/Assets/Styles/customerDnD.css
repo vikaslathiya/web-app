@@ -1,0 +1,25 @@
+.dragItem {
+    color: white;
+    font-weight: 500;
+    cursor: move;
+    padding: 8px;
+    z-index: 1000;
+    transition-duration: 300ms;
+}
+
+.dragStart {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.dragOverLR {
+    transform: translate3d(94px, 0px, 0px);
+}
+
+.dragOverRL {
+    transform: translate3d(-94px, 0px, 0px);
+}
+
+.dragEnd {
+    transform: translate3d(0px, 0px, 0px);
+}

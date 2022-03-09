@@ -7,7 +7,7 @@ export const useStyles = makeStyles(() => ({
     mainBox: {
         padding: "35px 10px",
         paddingTop: "12px",
-        background: "#fbfbfb",
+        background: "white",
         borderRadius: "10px",
     },
     icons: {
@@ -15,6 +15,7 @@ export const useStyles = makeStyles(() => ({
             fontSize: "18px",
             margin: "0px 4px",
             cursor: "pointer",
+            color: "black",
         },
     },
     tableTop: {
@@ -62,26 +63,20 @@ export const useStyles = makeStyles(() => ({
         height: "5px",
         zIndex: 10,
         "& .MuiTableCell-root": {
-            // color: "white",
             background: "transparent",
-            // fontWeight: 500,
             padding: "4px 20px",
             paddingLeft: 0,
-            // cursor: "move",
             zIndex: 2,
         }
     },
-    // dragTableRow: {
-    //     background: "#9A1752",
-    //     "& .MuiTableCell-root": {
-    //         color: "white",
-    //         background: "transparent",
-    //         fontWeight: "bold",
-    //         padding: "4px 20px 4px 0px",
-    //         borderBottomColor: "transparent",
-    //         minWidth: "130px"
-    //     }
-    // },
+    dragItem: {
+        color: "white",
+        fontWeight: 500,
+        cursor: "move",
+        padding: "8px",
+        zIndex: 1000,
+        transitionDuration: "300ms",
+    },
     tableBody: {
         "& .MuiTableCell-root": {
             background: "white",
@@ -101,8 +96,7 @@ export const useStyles = makeStyles(() => ({
         "& .MuiToolbar-root .MuiTablePagination-spacer": {
             display: "none"
         }
-    }
-
+    },
 }));
 
 
